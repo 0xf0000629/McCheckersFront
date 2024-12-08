@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import "./globals.css";
+import "../globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -13,8 +13,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "McCheckers Login",
-  description: "log in man",
+  title: "McCheckers Website",
+  description: "AYOOOOOO",
 };
 
 export default function RootLayout({ children }) {

@@ -42,7 +42,7 @@ export default function Home() {
               background: activeForm === 'login' ? 'lightblue' : 'white',
             }}
           >
-            SWITCH
+            {activeForm === 'login' ? 'No account?' : 'Already registered?'}
           </button>
         </div>
 
