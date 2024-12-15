@@ -14,6 +14,7 @@ export default function Home() {
   const [thesurname, setsurname] = useState('');
   const [thename, setname] = useState('');
   const [thephone, setphone] = useState('');
+  const [thectr, setcountry] = useState('');
 
   const [activeForm, setActiveForm] = useState('login');
 
@@ -23,31 +24,39 @@ export default function Home() {
   const handleSN = (e) => {setsurname(e.target.value);};
   const handleN = (e) => {setname(e.target.value);};
   const handlePH = (e) => {setphone(e.target.value);};
+  const handleCTR = (e) => {setcountry(e.target.value);};
 
 
   const logEmIn = async (e) => { 
     e.preventDefault(); 
     //alert(`"Login:": ${login}, "Password:": ${password}`); 
-    const response = 1;
-    if (response == 1) {
-      /*const { token } = await response.json();
-      localStorage.setItem("authToken", token);*/
+    const response = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: login, password: password}),
+    });
+    if (response.ok) {
+      const { token } = await response.json();
+      localStorage.setItem("authToken", token);
       router.push("/homepage");
     } else {
-      alert("Invalid credentials");
+      console.log(response);
     }
   };
 
   const regEmIn = async (e) => { 
     e.preventDefault(); 
-    //alert(`"Login:": ${login}, "Password:": ${password}`); 
-    const response = 1;
-    if (response == 1) {
-      /*const { token } = await response.json();
-      localStorage.setItem("authToken", token);*/
+    const response = await fetch('/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: login, password: password, name: thename, surname: thesurname, phoneNumber: thephone, countryId: Number(thectr)}),
+    });
+    if (response.ok) {
+      const { token } = await response.json();
+      localStorage.setItem("authToken", token);
       router.push("/homepage");
     } else {
-      alert("Invalid credentials");
+      console.log(response);
     }
   };
 
@@ -118,6 +127,10 @@ export default function Home() {
               onChange={handlePH}
               style={{ padding: '8px', marginRight: '10px' }}
             /><br/>
+            <select value={thectr} onChange={handleCTR} style={{ padding: '8px', marginRight: '10px' }}>
+              <option value="" disabled> select... </option>
+              <option value="0">Russia</option>
+            </select><br/>
             <input
               type="text"
               placeholder="Username..."

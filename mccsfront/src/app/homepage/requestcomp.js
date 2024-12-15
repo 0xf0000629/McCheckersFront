@@ -1,6 +1,8 @@
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 export default function RequestComp({ id, place, time, mod, players, joinbutton, modbutton }) {
+    const router = useRouter();
     return (
         <div className={styles.reqout}>
             <div key={"info"+id} className={styles.reqin}>
@@ -11,7 +13,7 @@ export default function RequestComp({ id, place, time, mod, players, joinbutton,
             <div key={"player"+id} className={styles.reqin}>
                 <h2>Players: </h2>
                 {players.map((player) => (
-                    <div key={"player"+id+"_"+player.id}>
+                    <div onClick={() => router.push("/profile")} key={"player"+id+"_"+player.id}>
                         {player.firstname} {player.secondname}, ELO: {player.elo}
                         <br/>
                     </div>
