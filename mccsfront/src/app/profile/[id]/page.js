@@ -3,7 +3,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 let data = {
   "id": 999,
@@ -19,8 +19,8 @@ export default function Profile() {
     console.log("you are not authorized!!!");
     //return;
   }
-  const router = useRouter();
-  const id = window.sessionStorage.getItem('focus');
+  const params = useParams();
+  const id = params.id;
 
   useEffect(() => {
     // Function to fetch data

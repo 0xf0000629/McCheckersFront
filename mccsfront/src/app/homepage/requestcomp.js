@@ -13,7 +13,7 @@ export default function RequestComp({ id, place, time, mod, players, joinbutton,
             <div key={"player"+id} className={styles.reqin}>
                 <h2>Players: </h2>
                 {players.map((player) => (
-                    <div onClick={() => router.push("/profile")} key={"player"+id+"_"+player.id}>
+                    <div onClick={() => {router.push("/profile" + player.id);}} key={"player"+id+"_"+player.id}>
                         {player.firstname} {player.secondname}, ELO: {player.elo}
                         <br/>
                     </div>

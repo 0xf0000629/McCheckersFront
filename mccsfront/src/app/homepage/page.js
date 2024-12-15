@@ -8,24 +8,24 @@ import EpicForm from "./epicform";
 import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
 let basedata = [
-    {
-      "id": 1,
-      "room": 234,
-      "building": "ADDRESS",
-      "time": "2020-11-20 11:30:00",
-      "moderator_firstname": "richard",
-      "moderator_secondname": "harrys",
-      "moderator_elo": 2300,
-      "players": [
-        {
-          "id": 36,
-          "firstname": "mike",
-          "secondname": "hawk",
-          "elo": 2300,
-        }
-      ]
-    }
-  ];
+  {
+    "id": 1,
+    "room": 234,
+    "building": "ADDRESS",
+    "time": "2020-11-20 11:30:00",
+    "moderator_firstname": "richard",
+    "moderator_secondname": "harrys",
+    "moderator_elo": 2300,
+    "players": [
+      {
+        "id": 36,
+        "firstname": "mike",
+        "secondname": "hawk",
+        "elo": 2300,
+      }
+    ]
+  }
+];
 /*for (let i=2;i<=50;i++){
   basedata.push({
     "id": i,
@@ -56,7 +56,7 @@ export default function Homepage() {
   const token = window.localStorage.getItem('authToken');
   if (!token) {
     alert("you are not authorized!!!");
-    return;
+    //return;
   }
 
   const [count, setCount] = useState(1);
@@ -78,7 +78,7 @@ export default function Homepage() {
   
   console.log("redraw");
   async () => {
-    const response = await fetch('/requests', {
+    const response = await fetch('/api/requests', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
     });
@@ -95,10 +95,10 @@ export default function Homepage() {
     const formData = new FormData(e.target);
     const reqdata = Object.fromEntries(formData.entries());
 
-    const response = await fetch('/requests/create', {
+    const response = await fetch('/api/requests/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-      body: JSON.stringify({ roomId: Number(reqdata.room), dateTime: reqdata.time, creatorId: 1 }),
+      body: JSON.stringify({ roomId: Number(reqdata.room), dateTime: reqdata.time}),
     });
 
     if (response.ok){
@@ -129,7 +129,7 @@ export default function Homepage() {
     if (index !== -1){
       if (modpriv == 0){
         if (data[index].players.length < 2){
-          const response = await fetch('/requests/' + id, {
+          const response = await fetch('/api/requests/' + id, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
           });
@@ -141,7 +141,7 @@ export default function Homepage() {
       }
       else{
         if (data[index].moderator_id == undefined){
-          const response = await fetch('/requests/' + id, {
+          const response = await fetch('/api/requests/' + id, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
           });
