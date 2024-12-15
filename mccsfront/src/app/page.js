@@ -3,15 +3,17 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const [login, setlogin] = useState('');
   const [password, setpassword] = useState('');
 
   const [thesurname, setsurname] = useState('');
   const [thename, setname] = useState('');
   const [thephone, setphone] = useState('');
-
 
   const [activeForm, setActiveForm] = useState('login');
 
@@ -23,7 +25,31 @@ export default function Home() {
   const handlePH = (e) => {setphone(e.target.value);};
 
 
-  const handleSubmit = (e) => { e.preventDefault(); alert(`"Login:": ${login}, "Password:": ${password}`); };
+  const logEmIn = async (e) => { 
+    e.preventDefault(); 
+    //alert(`"Login:": ${login}, "Password:": ${password}`); 
+    const response = 1;
+    if (response == 1) {
+      /*const { token } = await response.json();
+      localStorage.setItem("authToken", token);*/
+      router.push("/homepage");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
+
+  const regEmIn = async (e) => { 
+    e.preventDefault(); 
+    //alert(`"Login:": ${login}, "Password:": ${password}`); 
+    const response = 1;
+    if (response == 1) {
+      /*const { token } = await response.json();
+      localStorage.setItem("authToken", token);*/
+      router.push("/homepage");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -48,7 +74,7 @@ export default function Home() {
 
 
         {activeForm === 'login' && (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={logEmIn}>
             <input
               type="text"
               placeholder="Username..."
@@ -70,7 +96,7 @@ export default function Home() {
         )}
 
         {activeForm === 'register' && (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={regEmIn}>
             <input
               type="text"
               placeholder="Surname..."

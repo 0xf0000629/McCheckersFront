@@ -11,7 +11,6 @@ const data = [
       "room": 234,
       "building": "ADDRESS",
       "time": "2020-11-20 11:30:00",
-      "moderator_id": 23,
       "moderator_firstname": "richard",
       "moderator_secondname": "harrys",
       "moderator_elo": 2300,
@@ -20,12 +19,6 @@ const data = [
           "id": 36,
           "firstname": "mike",
           "secondname": "hawk",
-          "elo": 2300,
-        },
-        {
-          "id": 49,
-          "firstname": "may",
-          "secondname": "coxlon",
           "elo": 2300,
         }
       ]
@@ -61,9 +54,45 @@ export default function Homepage() {
   const [count, setCount] = useState(1);
 
   const [modpriv, setmodpriv] = useState(0);
+  const [reload, setReload] = useState(false);
 
   const increment = () => {if (count < (Math.floor(data.length/20)+1))setCount(count + 1);}
   const decrement = () => {if (count > 1) setCount(count - 1);}
+
+  function tryjoin(id, modpriv){
+    const index = data.findIndex(item => item.id === id);
+    if (index !== -1){
+      if (modpriv == 0){
+        if (data[index].players.length < 2){
+          //request
+          alert("requested");
+        }
+        else alert("this request is full!");
+      }
+      else{
+        if (data[index].moderator_id == undefined){
+          //request
+          alert("requested");
+        }
+        else alert("this request already has a moderator in charge!");
+      }
+    }
+    else alert("this request doesn't exist");
+  }
+
+  function request_del(id){
+    const response = 1;
+    if (response == 1){
+      const index = data.findIndex(item => item.id === id);
+      if (index !== -1) {
+          data.splice(index, 1);
+      }
+      alert("request GONE");
+      setReload(!reload);
+    }
+    else alert("uh-oh");
+  }
+
 
   return (
     <div className={styles.page}>
@@ -81,11 +110,12 @@ export default function Homepage() {
               id={request.id}
               place={{"room": request.room, "building": request.building}}
               time={request.time}
-              mod={{"surname": request.moderator_secondname, "name": request.moderator_firstname, "elo": request.moderator_elo}}
+              mod={{"id": request.moderator_id, "surname": request.moderator_secondname, "name": request.moderator_firstname, "elo": request.moderator_elo}}
               players={request.players}
               onClick={() => alert(`You clicked: ${request.id}`)}
               key={request.id}
-              modbutton={modpriv==1 ? () => alert("request to delete " + request.id) : undefined}
+              joinbutton={() => tryjoin(request.id, modpriv)}
+              modbutton={modpriv==1 ? () => request_del(request.id) : undefined}
             />
           ))
           }
