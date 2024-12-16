@@ -102,10 +102,10 @@ export default function Homepage() {
               "room": item.roomId,
               "building": "",
               "time": item.dateTime,
-              "moderator_id": item.moderator.id,
-              "moderator_firstname": item.moderator.name,
-              "moderator_secondname": item.moderator.surname,
-              "moderator_elo": item.moderator.elo,
+              "moderator_id": item.moderator?.id,
+              "moderator_firstname": item.moderator?.name,
+              "moderator_secondname": item.moderator?.surname,
+              "moderator_elo": item.moderator?.elo,
               "players": []
             });
             for (let j=0;j<item.participants.length;j++){
