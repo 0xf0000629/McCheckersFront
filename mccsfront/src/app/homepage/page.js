@@ -123,7 +123,7 @@ export default function Homepage() {
       else console.log(response);
     }
     const fetchMe = async () => {
-      const response = await fetch(process.env.USER+"/"+window.sessionStorage.getItem("focus"), {
+      const response = await fetch(process.env.USER+"/me", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });

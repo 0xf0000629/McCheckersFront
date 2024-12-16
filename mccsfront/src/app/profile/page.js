@@ -26,7 +26,7 @@ export default function Profile() {
   useEffect(() => {
     // Function to fetch data
     const fetchUser = async () => {
-      const response = await fetch(process.env.USER+'/'+id, {
+      const response = await fetch(process.env.USER+"/me", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
@@ -69,7 +69,7 @@ export default function Profile() {
         </div>
       </main>
       <footer className={styles.footer}>
-        
+
       </footer>
     </div>
   );

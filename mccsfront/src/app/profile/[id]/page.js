@@ -46,17 +46,18 @@ export default function Profile() {
       });
       if (response.ok) {
         let info = response.json().then(player => {
-        data = {
-          "id": player.id,
-          "firstname": player.name,
-          "secondname": player.surname,
-          "phone": player.phoneNumber,
-          "elo": player.elo,
-          "active": player.active,
-          "ismod": player.isModerator
-        }});
-        setMod(player.isModerator);
-        setActive(player.active);
+          data = {
+            "id": player.id,
+            "firstname": player.name,
+            "secondname": player.surname,
+            "phone": player.phoneNumber,
+            "elo": player.elo,
+            "active": player.active,
+            "ismod": player.isModerator
+          }
+          setMod(player.isModerator);
+          setActive(player.active);
+        });
       }
     }
     const fetchAdmin = async () => {
@@ -70,7 +71,7 @@ export default function Profile() {
       else console.log("not an admin...");
     }
     const fetchMe = async () => {
-      const response = await fetch(process.env.USER+"/"+window.sessionStorage.getItem("focus"), {
+      const response = await fetch(process.env.USER+"/me", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
