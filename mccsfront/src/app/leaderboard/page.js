@@ -32,13 +32,25 @@ export default function Profile() {
   useEffect(() => {
     // Function to fetch data
     const fetchLead = async () => {
-      const response = await fetch('/api/leader', {
+      const response = await fetch(process.env.LEADERBOARD, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
       if (response.ok) {
         console.log("epic");
-        setData(response.json());
+        let jsondata = response.json().then(jsondata => {
+          let loaded = [];
+          for (let i=0;i<jsondata.length;i++){
+            let item = jsondata[i];
+            loaded.push({
+              "id": item.id,
+              "firstname": item.name,
+              "secondname": item.surname,
+              "elo": item.elo,
+            });
+          }
+          setData(loaded);
+        });
       }
       else console.log(response);
     }

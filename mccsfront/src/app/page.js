@@ -30,7 +30,7 @@ export default function Home() {
   const logEmIn = async (e) => { 
     e.preventDefault(); 
     //alert(`"Login:": ${login}, "Password:": ${password}`); 
-    const response = await fetch('/auth/login', {
+    const response = await fetch(process.env.AUTH+'/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: login, password: password}),
@@ -46,7 +46,7 @@ export default function Home() {
 
   const regEmIn = async (e) => { 
     e.preventDefault(); 
-    const response = await fetch('/api/auth/register', {
+    const response = await fetch(process.env.AUTH+'/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: login, password: password, name: thename, surname: thesurname, phoneNumber: thephone, countryId: Number(thectr)}),

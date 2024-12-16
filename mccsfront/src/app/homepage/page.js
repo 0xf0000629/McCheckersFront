@@ -2,11 +2,17 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RequestComp from "./requestcomp";
 import EpicForm from "./epicform";
 import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
+let me = {
+  "id": 36,
+  "firstname": "mike",
+  "secondname": "hawk",
+  "elo": 2300
+}
 let basedata = [
   {
     "id": 1,
@@ -77,17 +83,63 @@ export default function Homepage() {
 
   
   console.log("redraw");
-  async () => {
-    const response = await fetch('/api/requests', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-    });
-    if (response.ok) {
-      console.log("epic");
-      setData(response.json());
+  useEffect(() => {
+    // Function to fetch data
+    const fetchReqs = async () => {
+      const response = await fetch(process.env.REQUEST, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("epic");
+        let jsondata = response.json().then(jsondata => {
+          let loaded = [];
+          for (let i=0;i<jsondata.length;i++){
+            let item = jsondata[i];
+            loaded.push({
+              "id": item.id,
+              "room": item.roomId,
+              "building": "",
+              "time": item.dateTime,
+              "moderator_id": item.moderator.id,
+              "moderator_firstname": item.moderator.name,
+              "moderator_secondname": item.moderator.surname,
+              "moderator_elo": item.moderator.elo,
+              "players": []
+            });
+            for (let j=0;j<item.participants.length;j++){
+              loaded[loaded.length-1].players.push({
+                "id": item.participants[j].id,
+                "firstname": item.participants[j].name,
+                "secondname": item.participants[j].surname,
+                "elo": item.participants[j].elo,
+              });
+            }
+          }
+          setData(loaded);
+        });
+      }
+      else console.log(response);
     }
-    else console.log(response);
-  }
+    const fetchMe = async () => {
+      const response = await fetch(process.env.USER+"/"+window.sessionStorage.getItem("focus"), {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("got you");
+        let jsondata = response.json().then(jsondata => {
+          me.id = jsondata.id;
+          me.firstname = jsondata.name;
+          me.secondname = jsondata.surname;
+          me.elo = jsondata.elo;
+        });
+      }
+      else console.log(response);
+    }
+    fetchReqs();
+    fetchMe();
+  }, []);
 
   const create_req = async (e) => {
     e.preventDefault();
@@ -95,7 +147,7 @@ export default function Homepage() {
     const formData = new FormData(e.target);
     const reqdata = Object.fromEntries(formData.entries());
 
-    const response = await fetch('/api/requests/create', {
+    const response = await fetch(process.env.REQUEST+'/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
       body: JSON.stringify({ roomId: Number(reqdata.room), dateTime: reqdata.time}),
@@ -129,7 +181,7 @@ export default function Homepage() {
     if (index !== -1){
       if (modpriv == 0){
         if (data[index].players.length < 2){
-          const response = await fetch('/api/requests/' + id, {
+          const response = await fetch(process.env.REQUEST + '/' + id, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
           });
@@ -141,7 +193,7 @@ export default function Homepage() {
       }
       else{
         if (data[index].moderator_id == undefined){
-          const response = await fetch('/api/requests/' + id, {
+          const response = await fetch(process.env.REQUEST + '/' + id, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
           });

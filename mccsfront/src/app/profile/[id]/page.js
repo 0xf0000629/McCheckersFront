@@ -21,11 +21,13 @@ export default function Profile() {
   }
   const params = useParams();
   const id = params.id;
+  let adminrights = 0;
+
 
   useEffect(() => {
     // Function to fetch data
     const fetchUser = async () => {
-      const response = await fetch('/api/user/'+id, {
+      const response = await fetch(process.env.USER+'/'+id, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
@@ -40,8 +42,29 @@ export default function Profile() {
         }});
       }
     }
+    const fetchAdmin = async () => {
+      const adminreq = await fetch(process.env.API+'/admin', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (adminreq.ok){
+        adminrights = 1;
+      }
+      else console.log("not an admin...");
+    }
     fetchUser();
+    fetchAdmin();
   }, []);
+
+  async function promote(id){
+    const response = await fetch(process.env.API+'/moderator/'+id, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+    });
+    if (response.ok) {
+      console.log("user promoted");
+    }
+  }
 
   return (
     <div className={styles.page}>
@@ -67,9 +90,10 @@ export default function Profile() {
         </div>
       </main>
       <footer className={styles.footer}>
-        <button className={styles.normalbutton}>CONFIRM</button>
         <button className={styles.normalbutton}>REPORT</button>
-        <button className={styles.normalbutton}>BAN</button>
+        {adminrights==1 ? (<button className={styles.normalbutton}>BAN</button>) : (<></>)}
+        {adminrights==1 ? (<button className={styles.normalbutton}>CONFIRM</button>) : (<></>)}
+        {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => promote(data.id)}>PROMOTE</button>) : (<></>)}
       </footer>
     </div>
   );

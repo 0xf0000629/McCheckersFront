@@ -25,7 +25,7 @@ export default function Profile() {
   useEffect(() => {
     // Function to fetch data
     const fetchUser = async () => {
-      const response = await fetch('/api/user/'+id, {
+      const response = await fetch(process.env.USER+'/'+id, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
