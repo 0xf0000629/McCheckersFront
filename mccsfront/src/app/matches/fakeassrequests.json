@@ -1,0 +1,26 @@
+[
+    {
+      "id": 1,
+      "room": 234,
+      "building": "ADDRESS",
+      "time": "2020-11-20 11:30:00",
+      "moderator_id": 23,
+      "moderator_firstname": "richard",
+      "moderator_secondname": "harrys",
+      "moderator_elo": 2300,
+      "players": [
+        {
+          "id": 36,
+          "firstname": "mike",
+          "secondname": "hawk",
+          "elo": 2300
+        },
+        {
+          "id": 49,
+          "firstname": "may",
+          "secondname": "coxlon",
+          "elo": 2300
+        }
+      ]
+    }
+  ]

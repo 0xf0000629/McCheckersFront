@@ -12,7 +12,8 @@ let me = {
   "firstname": "mike",
   "secondname": "hawk",
   "elo": 2300,
-  "active": true
+  "active": true,
+  "ismod": true
 }
 let basedata = [
   {
@@ -73,8 +74,9 @@ export default function Homepage() {
   const [reload, setReload] = useState(false);
 
   const [formActive, setForm] = useState(false);
+  const [reqfocus, setRF] = useState(-1);
 
-  const formOpen = () => {setForm(true);};
+  const formOpen = (f) => {setForm(true); setRF(f)};
   const formClose = () => {setForm(false);};
 
   const [data, setData] = useState(basedata);
@@ -119,6 +121,7 @@ export default function Homepage() {
     }
     else console.log(response);
   }
+
   const fetchMe = async () => {
     const response = await fetch(process.env.USER+"/me", {
       method: 'GET',
@@ -140,12 +143,11 @@ export default function Homepage() {
 
   console.log("redraw");
   useEffect(() => {
-    // Function to fetch data
     fetchReqs();
     fetchMe();
   }, []);
 
-  const create_req = async (e) => {
+  const report_req = async (e) => {
     e.preventDefault();
     formClose();
     const formData = new FormData(e.target);
@@ -158,61 +160,58 @@ export default function Homepage() {
     });
 
     if (response.ok){
-      fetchReqs();
+      console.log("reported");
     }
     else console.log(response);
   }
 
-  async function tryjoin(id, modpriv){
+  async function leave(id, modpriv){
     const index = data.findIndex(item => item.id === id);
     if (index !== -1){
       if (modpriv == 0){
-        if (data[index].players.length < 2){
-          const response = await fetch(process.env.REQUEST + '/' + id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
-          });
-          if (response.ok)
-            alert("cool");
-          else console.log(response);
+        const response = await fetch(process.env.REQUEST + '/' + id, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+        });
+        if (response.ok){
+          alert("cool");
+          fetchReqs();
         }
-        else alert("this request is full!");
+        else console.log(response);
       }
       else{
-        if (data[index].moderator_id == undefined){
-          const response = await fetch(process.env.REQUEST + '/' + id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
-          });
-          if (response.ok)
-            alert("cool");
-          else console.log(response);
+        const response = await fetch(process.env.REQUEST + '/' + id, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+        });
+        if (response.ok){
+          alert("cool");
+          fetchReqs();
         }
-        else alert("this request already has a moderator in charge!");
+        else console.log(response);
       }
     }
     else alert("this request doesn't exist");
   }
 
 
+
+
   return (
     <div className={styles.page}>
       <header>
-          <h1>AVAILABLE REQUESTS</h1>
-          {auth == false ? (<h3>not authenticated</h3>) : <></>}
-          <button className={styles.roundbutton} onClick={() => formOpen()}>
-            +
-          </button>
           <EpicForm
-            isOpen={formActive}
-            onClose={formClose}
-            onSubmit={create_req}
+              isOpen={formActive}
+              onClose={formClose}
+              onSubmit={report_req}
           />
+          <h1>MATCHES</h1>
+          {auth == false ? (<h3>not authenticated</h3>) : <></>}
       </header>
       <main className={styles.main}>
         <div className={styles.req}>
           {
-          data.slice((count-1)*20, (count)*20).map((request) => (
+          data.filter(req => req.players[0]?.id === me.id || req.players[1]?.id === me.id || req?.moderator_id === me.id).slice((count-1)*20, (count)*20).map((request) => (
             <RequestComp 
               id={request.id}
               place={{"room": request.room, "building": request.building}}
@@ -220,7 +219,8 @@ export default function Homepage() {
               mod={{"id": request.moderator_id, "surname": request.moderator_secondname, "name": request.moderator_firstname, "elo": request.moderator_elo}}
               players={request.players}
               key={request.id}
-              joinbutton={() => tryjoin(request.id, modpriv)}
+              joinbutton={() => leave(request.id, modpriv)}
+              modbutton={me.ismod==true ? () => formOpen(request.id) : undefined}
             />
           ))
           }

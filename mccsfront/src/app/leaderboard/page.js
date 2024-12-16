@@ -22,10 +22,12 @@ let basedata = [
 
 export default function Profile() {
   const token = window.localStorage.getItem('authToken');
+  let auth = true;
   if (!token) {
-    console.log("you are not authorized!!!");
+    auth = false;
     //return;
   }
+  
   const router = useRouter();
   const [data, setData] = useState(basedata);
 
@@ -65,6 +67,7 @@ export default function Profile() {
     <div className={styles.page}>
       <header>
           <h1>LEADERBOARDS</h1>
+          {auth == false ? (<h3>not authenticated</h3>) : <></>}
       </header>
       <main className={styles.main}>
         <div className={styles.req}>
