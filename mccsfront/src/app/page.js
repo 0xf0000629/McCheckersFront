@@ -98,7 +98,7 @@ export default function Home() {
               style={{ padding: '8px', marginRight: '10px' }}
             /><br/>
             <input
-              type="text"
+              type="password"
               placeholder="Password..."
               value={password}
               onChange={handlePass}

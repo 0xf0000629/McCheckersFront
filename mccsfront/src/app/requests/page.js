@@ -35,6 +35,20 @@ let basedata = [
     ]
   }
 ];
+let basebuilding = [
+  {
+    "name": "Joe Mama St.",
+    "rooms": [
+      "100", "101", "102"
+    ]
+  },
+  {
+    "name": "Mike Oxlong St.",
+    "rooms": [
+      "200", "201", "202"
+    ]
+  },
+];
 /*for (let i=2;i<=50;i++){
   basedata.push({
     "id": i,
@@ -86,6 +100,32 @@ export default function Homepage() {
   const increment = () => {if (count < (Math.floor(data.length/20)+1))setCount(count + 1);}
   const decrement = () => {if (count > 1) setCount(count - 1);}
 
+  const fetchBuildings = async () => {
+    const response = await fetch(process.env.REQUEST, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+    });
+    if (response.ok) {
+      console.log("epic");
+      let jsondata = response.json().then(jsondata => {
+        let loaded = [];
+        for (let i=0;i<jsondata.length;i++){
+          let item = jsondata[i];
+          loaded.push({
+            "name": item.id,
+            "rooms": []
+          });
+          for (let j=0;j<item.rooms.length;j++){
+            loaded[loaded.length-1].players.push(
+              item.rooms[j]
+            );
+          }
+        }
+        setData(loaded);
+      });
+    }
+    else console.log(response);
+  }
   const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
       method: 'GET',
@@ -144,6 +184,7 @@ export default function Homepage() {
   console.log("redraw");
   useEffect(() => {
     // Function to fetch data
+    fetchBuildings();
     fetchReqs();
     fetchMe();
   }, []);

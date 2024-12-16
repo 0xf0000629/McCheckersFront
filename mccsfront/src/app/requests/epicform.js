@@ -10,7 +10,7 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <h2>Pop-Up Form</h2>
+        <h2>Create request</h2>
         <form onSubmit={onSubmit}>
           <div className={styles.formGroup}>
             <h2>ROOM:</h2>

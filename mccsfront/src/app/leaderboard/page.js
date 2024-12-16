@@ -44,6 +44,9 @@ export default function Profile() {
   const router = useRouter();
   const [data, setData] = useState(basedata);
 
+  const [searchbar, setSearch] = useState("");
+  const handleSearch = (e) => {setSearch(e.target.value);};
+
   const fetchMe = async () => {
     const response = await fetch(process.env.USER+"/me", {
       method: 'GET',
@@ -109,9 +112,16 @@ export default function Profile() {
       <main className={styles.main}>
         <h1>LEADERBOARDS</h1>
         {auth == false ? (<h3>not authenticated</h3>) : <></>}
+        <input
+              type="text"
+              placeholder="Search..."
+              value={searchbar}
+              onChange={handleSearch}
+              style={{ padding: '8px', marginRight: '10px' }}
+        />
         <div className={styles.reqin}>
           {
-            data.slice(0, 100).map((player) => (
+            data.filter(item => (item.firstname+' '+item.secondname).startsWith(searchbar)).slice(0, 100).map((player) => (
               <button key={"player"+player.id} className={styles.leadercard} onClick={() => sendtoprofile(player.id)}>
                 <div className={styles.leader}>
                   <h2> {player.firstname} </h2>
