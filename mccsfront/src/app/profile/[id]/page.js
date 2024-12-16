@@ -1,24 +1,27 @@
 'use client'
 
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "../../page.module.css";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import ProfilePanel from "@/app/profilepanel";
+import EpicForm from "./epicform.js";
 
 let me = {
-  "id": 36,
-  "firstname": "mike",
+  "id": -1,
+  "firstname": "Guest",
   "secondname": "hawk",
   "elo": 2300,
   "active": true,
   "ismod": false
 }
 let data = {
-  "id": 999,
+  "id": 0,
   "firstname": "Place",
   "secondname": "Holder",
   "phone": "+79009009090",
   "elo": 3333,
+  "rank": "GOAT",
   "active": true,
   "ismod": false
 };
@@ -36,6 +39,12 @@ export default function Profile() {
   const [ismod, setMod] = useState(false);
   const [active, setActive] = useState(false);
 
+  const [formActive, setForm] = useState(false);
+  const router = useRouter();
+
+  const formOpen = () => {setForm(true);};
+  const formClose = () => {setForm(false);};
+
 
   useEffect(() => {
     // Function to fetch data
@@ -52,6 +61,7 @@ export default function Profile() {
             "secondname": player.surname,
             "phone": player.phoneNumber,
             "elo": player.elo,
+            "rank": player.rank,
             "active": player.active,
             "ismod": player.isModerator
           }
@@ -143,10 +153,36 @@ export default function Profile() {
     }
   }
 
+  const blocke = async (e) => {
+    e.preventDefault();
+    formClose();
+    const formData = new FormData(e.target);
+    const reqdata = Object.fromEntries(formData.entries());
+
+    const response = await fetch(process.env.ADMIN+'/block', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+      body: JSON.stringify({ userId: Number(id), enddate: reqdata.time, cause: reqdata.cause}),
+    });
+
+    if (response.ok){
+      console.log("user blocked");
+    }
+    else console.log(response);
+  }
+
   return (
     <div className={styles.page}>
-      <header>
-          <h1>PROFILE</h1>
+      <header className={styles.header}>
+          <EpicForm
+            isOpen={formActive}
+            onClose={formClose}
+            onSubmit={blocke}
+          />
+          <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
+          <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
+          <button className={styles.maxbutton} onClick={() => router.push("/leaderboard")}>LEADERBOARDS</button>
+          <ProfilePanel name={me.firstname}/>
       </header>
       <main className={styles.main}>
         <div className={styles.profcard}>
@@ -162,7 +198,7 @@ export default function Profile() {
             <h3>user id {data.id}</h3>
             <h2>NAME: {data.firstname} {data.secondname}</h2>
             <h2>PHONE: {data.phone}</h2>
-            <h2>ELO: {data.elo}</h2>
+            <h2>ELO: {data.elo}, {data.rank}</h2>
           </div>
         </div>
       </main>
@@ -170,6 +206,7 @@ export default function Profile() {
         {me.ismod==1 ? (<button className={styles.normalbutton}>REPORT</button>) : (<></>)}
         {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => banswitch(data.id)}>BAN</button>) : (<></>)}
         {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => promoteswitch(data.id)}>PROMOTE</button>) : (<></>)}
+        {adminrights==0 ? (<button className={styles.normalbutton} onClick={() => formOpen()}>BLOCK</button>) : (<></>)}
       </footer>
     </div>
   );

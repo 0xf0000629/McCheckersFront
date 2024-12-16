@@ -3,7 +3,7 @@
 import Image from "next/image";
 import styles from "../page.module.css";
 import { useEffect, useState } from "react";
-import MatchComp from "./requestcomp";
+import RequestComp from "./requestcomp";
 import EpicForm from "./epicform";
 import ProfilePanel from "../profilepanel";
 import { useRouter } from "next/navigation";
@@ -18,34 +18,38 @@ let me = {
 }
 let basedata = [
   {
-    "request":{
-      "id": 23
-    },
-    "success": true,
-    "winner":
-    {
-      "id": 36,
-      "firstname": "mike",
-      "secondname": "hawk",
-      "elo": 2300,
-    },
-    "loser":
-    {
-      "id": 37,
-      "firstname": "mike",
-      "secondname": "hawk",
-      "elo": 2300,
-    },
-    "winnerscore": 0,
-    "loserscore": 0,
-    "remark": "AWESOME",
-    "moderator_id": 3,
+    "userid": 37,
+    "modid": 2,
+    "reason": "annoying"
+  }
+];
+/*for (let i=2;i<=50;i++){
+  basedata.push({
+    "id": i,
+    "room": Math.floor(Math.random()*1000%300),
+    "building": "ADDRESS",
+    "time": "2020-11-20 11:30:00",
+    "moderator_id": 23,
     "moderator_firstname": "richard",
     "moderator_secondname": "harrys",
     "moderator_elo": 2300,
-  }
-];
-export default function MatchPage() {
+    "players": [
+      {
+        "id": 36,
+        "firstname": "mike",
+        "secondname": "hawk",
+        "elo": 2300,
+      },
+      {
+        "id": 49,
+        "firstname": "may",
+        "secondname": "coxlon",
+        "elo": 2300,
+      }
+    ]
+  });
+}*/
+export default function Homepage() {
   const token = window.localStorage.getItem('authToken');
   let auth = true;
   if (!token) {
@@ -70,6 +74,8 @@ export default function MatchPage() {
   const increment = () => {if (count < (Math.floor(data.length/20)+1))setCount(count + 1);}
   const decrement = () => {if (count > 1) setCount(count - 1);}
 
+  const adminrights = 0;
+
   const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
       method: 'GET',
@@ -82,27 +88,9 @@ export default function MatchPage() {
         for (let i=0;i<jsondata.length;i++){
           let item = jsondata[i];
           loaded.push({
-            "id": item.request.id,
-            "success": item.isSuccess,
-            "winner": {
-              "id": item.winner.id,
-              "firstname": item.winner.name,
-              "secondname": item.winner.surname,
-              "elo": item.winner.elo
-            },
-            "loser": {
-              "id": item.loser.id,
-              "firstname": item.loser.name,
-              "secondname": item.loser.surname,
-              "elo": item.loser.elo
-            },
-            "winnerscore": item.winnerScore,
-            "loserscore": item.loserScore,
-            "remark": item.remark,
-            "moderator_id": item.moderator?.id,
-            "moderator_firstname": item.moderator?.name,
-            "moderator_secondname": item.moderator?.surname,
-            "moderator_elo": item.moderator?.elo,
+            "modid": item.moderatorId,
+            "userid": item.userId,
+            "reason": item.reason,
           });
         }
         setData(loaded);
@@ -128,46 +116,32 @@ export default function MatchPage() {
     }
     else console.log(response);
   }
+  const fetchAdmin = async () => {
+    const adminreq = await fetch(process.env.API+'/admin', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+    });
+    if (adminreq.ok){
+      adminrights = 1;
+    }
+    else console.log("not an admin...");
+  }
 
   console.log("redraw");
   useEffect(() => {
     // Function to fetch data
     fetchReqs();
     fetchMe();
+    fetchAdmin();
   }, []);
 
-  async function tryjoin(id, modpriv){
-    const index = data.findIndex(item => item.id === id);
-    if (index !== -1){
-      if (modpriv == 0){
-        if (data[index].players.length < 2){
-          const response = await fetch(process.env.REQUEST + '/' + id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
-          });
-          if (response.ok)
-            alert("cool");
-          else console.log(response);
-        }
-        else alert("this request is full!");
-      }
-      else{
-        if (data[index].moderator_id == undefined){
-          const response = await fetch(process.env.REQUEST + '/' + id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
-          });
-          if (response.ok)
-            alert("cool");
-          else console.log(response);
-        }
-        else alert("this request already has a moderator in charge!");
-      }
-    }
-    else alert("this request doesn't exist");
+  const sendtoprofile = (id) => {
+    router.push('/profile/'+id);
   }
-
-
+  if (adminrights == 0)
+  return (
+    <div className={styles.page}><h1>you are not an admin</h1></div>);
+  else
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -177,12 +151,20 @@ export default function MatchPage() {
           <ProfilePanel name={me.firstname}/>
       </header>
       <main className={styles.main}>
-        <h1>AVAILABLE MATCHES</h1>
+        <h1>REPORTS</h1>
         {auth == false ? (<h3>not authenticated</h3>) : <></>}
         <div className={styles.req}>
           {
           data.slice((count-1)*20, (count)*20).map((request) => (
-            <MatchComp match={request}/>
+            <button key={request.userid+"_"+request.modid} className={styles.leadercard} onClick={() => sendtoprofile(request.userid)}>
+                <div className={styles.leader}>
+                  <h2> UserID: {request.userid} </h2>
+                  <h2> Reported by: {request.modid} </h2>
+                </div>
+                <div className={styles.leader}>
+                  <h2> Reason: {request.reason} </h2>
+                </div>
+            </button>
           ))
           }
         </div>

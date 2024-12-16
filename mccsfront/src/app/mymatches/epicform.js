@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 
 export default function EpicForm({ isOpen, onClose, onSubmit }){
   if (!isOpen) return null; // Do not render if the pop-up is not open

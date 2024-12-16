@@ -1,4 +1,4 @@
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 import { useRouter } from "next/navigation";
 
 export default function RequestComp({ id, place, time, mod, players, joinbutton, modbutton }) {
@@ -19,7 +19,8 @@ export default function RequestComp({ id, place, time, mod, players, joinbutton,
                     </div>
                 ))}
             </div>
-            {joinbutton && (<button className={styles.normalbutton} onClick={joinbutton}>JOIN</button>)}
+            {joinbutton && (<button className={styles.normalbutton} onClick={joinbutton}>LEAVE</button>)}
+            {modbutton && (<button className={styles.normalbutton} onClick={modbutton}>REPORT</button>)}
         </div>
     );
   }

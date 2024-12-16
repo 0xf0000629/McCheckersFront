@@ -1,17 +1,19 @@
 'use client'
 
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import ProfilePanel from "../profilepanel";
 
 let data = {
-  "id": 999,
-  "firstname": "Place",
-  "secondname": "Holder",
-  "phone": "+79009009090",
-  "elo": 3333,
-  "active": true
+  "id": -1,
+  "firstname": "Guest",
+  "secondname": "",
+  "phone": "None",
+  "elo": 0,
+  "rank": "none",
+  "active": false
 };;
 
 export default function Profile() {
@@ -38,6 +40,7 @@ export default function Profile() {
           "secondname": player.surname,
           "phone": player.phoneNumber,
           "elo": player.elo,
+          "rank": player.rank,
           "verified": player.active
         }});
       }
@@ -47,8 +50,11 @@ export default function Profile() {
 
   return (
     <div className={styles.page}>
-      <header>
-          <h1>PROFILE</h1>
+      <header className={styles.header}>
+          <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
+          <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
+          <button className={styles.maxbutton} onClick={() => router.push("/leaderboard")}>LEADERBOARDS</button>
+          <ProfilePanel name={data.firstname}/>
       </header>
       <main className={styles.main}>
         <div className={styles.profcard}>
@@ -64,7 +70,7 @@ export default function Profile() {
             <h3>user id {data.id}</h3>
             <h2>NAME: {data.firstname} {data.secondname}</h2>
             <h2>PHONE: {data.phone}</h2>
-            <h2>ELO: {data.elo}</h2>
+            <h2>ELO: {data.elo}, {data.rank}</h2>
           </div>
         </div>
       </main>
