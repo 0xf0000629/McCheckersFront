@@ -5,13 +5,23 @@ import styles from "./page.module.css";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
+let me = {
+  "id": 36,
+  "firstname": "mike",
+  "secondname": "hawk",
+  "elo": 2300,
+  "active": true,
+  "ismod": false
+}
 let data = {
   "id": 999,
   "firstname": "Place",
   "secondname": "Holder",
   "phone": "+79009009090",
-  "elo": 3333
-};;
+  "elo": 3333,
+  "active": true,
+  "ismod": false
+};
 
 export default function Profile() {
   const token = window.localStorage.getItem('authToken');
@@ -22,6 +32,9 @@ export default function Profile() {
   const params = useParams();
   const id = params.id;
   let adminrights = 0;
+
+  const [ismod, setMod] = useState(false);
+  const [active, setActive] = useState(false);
 
 
   useEffect(() => {
@@ -38,8 +51,12 @@ export default function Profile() {
           "firstname": player.name,
           "secondname": player.surname,
           "phone": player.phoneNumber,
-          "elo": player.elo
+          "elo": player.elo,
+          "active": player.active,
+          "ismod": player.isModerator
         }});
+        setMod(player.isModerator);
+        setActive(player.active);
       }
     }
     const fetchAdmin = async () => {
@@ -52,17 +69,76 @@ export default function Profile() {
       }
       else console.log("not an admin...");
     }
+    const fetchMe = async () => {
+      const response = await fetch(process.env.USER+"/"+window.sessionStorage.getItem("focus"), {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("got you");
+        let jsondata = response.json().then(jsondata => {
+          me.id = jsondata.id;
+          me.firstname = jsondata.name;
+          me.secondname = jsondata.surname;
+          me.elo = jsondata.elo;
+          me.active = jsondata.active;
+          me.ismod = jsondata.isModerator;
+        });
+      }
+      else console.log(response);
+    }
+    fetchMe();
     fetchUser();
     fetchAdmin();
   }, []);
 
-  async function promote(id){
-    const response = await fetch(process.env.API+'/moderator/'+id, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-    });
-    if (response.ok) {
-      console.log("user promoted");
+  async function promoteswitch(id){
+    if (data.ismod == false){
+      const response = await fetch(process.env.ADMIN+'/moderator/'+id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("user promoted");
+        data.ismod = true;
+        setMod(true);
+      }
+    }
+    else{
+      const response = await fetch(process.env.ADMIN+'/moderator/'+id, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("user unpromoted");
+        data.ismod = false;
+        setMod(false);
+      }
+    }
+  }
+
+  async function banswitch(id){
+    if (data.active == false){
+      const response = await fetch(process.env.ADMIN+'/activate/'+id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("user unbanned");
+        data.active = true;
+        setActive(true);
+      }
+    }
+    else{
+      const response = await fetch(process.env.ADMIN+'/deactivate/'+id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      });
+      if (response.ok) {
+        console.log("user banned");
+        data.active = false;
+        setActive(false);
+      }
     }
   }
 
@@ -90,10 +166,9 @@ export default function Profile() {
         </div>
       </main>
       <footer className={styles.footer}>
-        <button className={styles.normalbutton}>REPORT</button>
-        {adminrights==1 ? (<button className={styles.normalbutton}>BAN</button>) : (<></>)}
-        {adminrights==1 ? (<button className={styles.normalbutton}>CONFIRM</button>) : (<></>)}
-        {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => promote(data.id)}>PROMOTE</button>) : (<></>)}
+        {me.ismod==1 ? (<button className={styles.normalbutton}>REPORT</button>) : (<></>)}
+        {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => banswitch(data.id)}>BAN</button>) : (<></>)}
+        {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => promoteswitch(data.id)}>PROMOTE</button>) : (<></>)}
       </footer>
     </div>
   );

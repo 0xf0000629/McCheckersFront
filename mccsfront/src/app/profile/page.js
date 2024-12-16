@@ -10,7 +10,8 @@ let data = {
   "firstname": "Place",
   "secondname": "Holder",
   "phone": "+79009009090",
-  "elo": 3333
+  "elo": 3333,
+  "active": true
 };;
 
 export default function Profile() {
@@ -36,7 +37,8 @@ export default function Profile() {
           "firstname": player.name,
           "secondname": player.surname,
           "phone": player.phoneNumber,
-          "elo": player.elo
+          "elo": player.elo,
+          "verified": player.active
         }});
       }
     }
@@ -67,9 +69,7 @@ export default function Profile() {
         </div>
       </main>
       <footer className={styles.footer}>
-        <button className={styles.normalbutton}>CONFIRM</button>
-        <button className={styles.normalbutton}>REPORT</button>
-        <button className={styles.normalbutton}>BAN</button>
+        
       </footer>
     </div>
   );

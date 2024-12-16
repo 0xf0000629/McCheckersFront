@@ -11,7 +11,8 @@ let me = {
   "id": 36,
   "firstname": "mike",
   "secondname": "hawk",
-  "elo": 2300
+  "elo": 2300,
+  "active": true
 }
 let basedata = [
   {
@@ -133,6 +134,8 @@ export default function Homepage() {
           me.firstname = jsondata.name;
           me.secondname = jsondata.surname;
           me.elo = jsondata.elo;
+          me.active = jsondata.active;
+          me.ismod = jsondata.isModerator;
         });
       }
       else console.log(response);
