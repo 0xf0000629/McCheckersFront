@@ -1,59 +1,65 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import styles from "../page.module.css";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProfilePanel from "../profilepanel";
 
 let basedata = [
-    {
-      "id": 36,
-      "firstname": "mike",
-      "secondname": "hawk",
-      "elo": 2300,
-      "rank": "GOAT",
-      "matches": 120
-    },
-    {
-      "id": 49,
-      "firstname": "may",
-      "secondname": "coxlon",
-      "elo": 2300,
-      "rank": "GOAT",
-      "matches": 120
-    }
-  ];
+  {
+    id: 36,
+    firstname: "mike",
+    secondname: "hawk",
+    elo: 2300,
+    rank: "GOAT",
+    matches: 120,
+  },
+  {
+    id: 49,
+    firstname: "may",
+    secondname: "coxlon",
+    elo: 2300,
+    rank: "GOAT",
+    matches: 120,
+  },
+];
 
-  let me = {
-    "id": -1,
-    "firstname": "Guest",
-    "secondname": "hawk",
-    "elo": 2300,
-    "active": true
-  }
-  
+let me = {
+  id: -1,
+  firstname: "Guest",
+  secondname: "hawk",
+  elo: 2300,
+  active: true,
+};
+
 export default function Profile() {
-  const token = window.localStorage.getItem('authToken');
+  const token = window.localStorage.getItem("authToken");
   let auth = true;
   if (!token) {
     auth = false;
     //return;
   }
-  
+
   const router = useRouter();
   const [data, setData] = useState(basedata);
 
   const [searchbar, setSearch] = useState("");
-  const handleSearch = (e) => {setSearch(e.target.value);};
+  const handleSearch = e => {
+    setSearch(e.target.value);
+  };
 
   const fetchMe = async () => {
-    const response = await fetch(process.env.USER+"/me", {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+    const response = await fetch(process.env.USER + "/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       console.log("got you");
+      console.log(response);
       let jsondata = response.json().then(jsondata => {
         me.id = jsondata.id;
         me.firstname = jsondata.name;
@@ -62,85 +68,109 @@ export default function Profile() {
         me.active = jsondata.active;
         me.ismod = jsondata.isModerator;
       });
-    }
-    else console.log(response);
-  }
+    } else console.log(response);
+  };
 
   useEffect(() => {
     // Function to fetch data
     const fetchLead = async () => {
       const response = await fetch(process.env.LEADERBOARD, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (response.ok) {
         console.log("epic");
         let jsondata = response.json().then(jsondata => {
           let loaded = [];
-          for (let i=0;i<jsondata.length;i++){
+          for (let i = 0; i < jsondata.length; i++) {
             let item = jsondata[i];
             loaded.push({
-              "id": item.id,
-              "firstname": item.name,
-              "secondname": item.surname,
-              "elo": item.elo,
-              "rank": item.rank,
-              "matches": item.totalMatches
+              id: item.id,
+              firstname: item.name,
+              secondname: item.surname,
+              elo: item.elo,
+              rank: item.rank,
+              matches: item.totalMatches,
             });
           }
           setData(loaded);
         });
-      }
-      else console.log(response);
-    }
+      } else console.log(response);
+    };
     fetchLead();
     fetchMe();
   }, []);
 
-  const sendtoprofile = (id) => {
-    router.push('/profile/'+id);
-  }
+  const sendtoprofile = id => {
+    router.push("/profile/" + id);
+  };
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-          <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
-          <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
-          <button className={styles.maxbutton} onClick={() => router.push("/leaderboard")}>LEADERBOARDS</button>
-          <ProfilePanel name={me.firstname}/>
+        <button
+          className={styles.maxbutton}
+          onClick={() => router.push("/requests")}
+        >
+          REQUESTS
+        </button>
+        <button
+          className={styles.maxbutton}
+          onClick={() => router.push("/matches")}
+        >
+          MATCHES
+        </button>
+        <button
+          className={styles.maxbutton}
+          onClick={() => router.push("/leaderboard")}
+        >
+          LEADERBOARDS
+        </button>
+        <ProfilePanel name={me.firstname} />
       </header>
       <main className={styles.main}>
         <h1>LEADERBOARDS</h1>
-        {auth == false ? (<h3>not authenticated</h3>) : <></>}
+        {auth == false ? <h3>not authenticated</h3> : <></>}
         <input
-              type="text"
-              placeholder="Search..."
-              value={searchbar}
-              onChange={handleSearch}
-              style={{ padding: '8px', marginRight: '10px' }}
+          type="text"
+          placeholder="Search..."
+          value={searchbar}
+          onChange={handleSearch}
+          style={{ padding: "8px", marginRight: "10px" }}
         />
         <div className={styles.reqin}>
-          {
-            data.filter(item => (item.firstname+' '+item.secondname).startsWith(searchbar)).slice(0, 100).map((player) => (
-              <button key={"player"+player.id} className={styles.leadercard} onClick={() => sendtoprofile(player.id)}>
+          {data
+            .filter(item =>
+              (item.firstname + " " + item.secondname).startsWith(searchbar)
+            )
+            .slice(0, 100)
+            .map(player => (
+              <button
+                key={"player" + player.id}
+                className={styles.leadercard}
+                onClick={() => sendtoprofile(player.id)}
+              >
                 <div className={styles.leader}>
                   <h2> {player.firstname} </h2>
                   <h2> {player.secondname} </h2>
                 </div>
                 <div className={styles.leader}>
-                  <h2> {player.elo}, {player.rank}</h2>
+                  <h2>
+                    {" "}
+                    {player.elo}, {player.rank}
+                  </h2>
                 </div>
                 <div className={styles.leader}>
                   <h2> Matches won: {player.matches} </h2>
                 </div>
               </button>
-            ))
-          }
+            ))}
         </div>
       </main>
-      <footer className={styles.footer}>
-        
-      </footer>
+      <footer className={styles.footer}></footer>
     </div>
   );
 }
