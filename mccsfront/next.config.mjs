@@ -9,6 +9,7 @@ const nextConfig = {
     REPORT: "http://localhost:8080/api/reports",
     MATCH: "http://localhost:8080/api/matches",
     ADMIN: "http://localhost:8080/admin",
+    LOGOUT: "http://localhost:8080/api/auth/logout",
   },
 };
 

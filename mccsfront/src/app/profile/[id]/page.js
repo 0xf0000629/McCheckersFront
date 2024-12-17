@@ -113,6 +113,38 @@ export default function Profile() {
     fetchAdmin();
   }, []);
 
+  async function activeSwitch(id) {
+    if (data.active == false) {
+      const response = await fetch(process.env.ADMIN + "/activate/" + id, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        console.log("user activated");
+        data.active = true;
+        setActive(true);
+      } else {
+        console.log(response);
+      }
+    } else {
+      const response = await fetch(process.env.ADMIN + "/deactivate/" + id, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        console.log("user deactivated");
+        data.active = false;
+        setActive(false);
+      }
+    }
+  }
+
   async function promoteswitch(id) {
     if (data.ismod == false) {
       const response = await fetch(process.env.ADMIN + "/moderator/" + id, {
@@ -269,9 +301,19 @@ export default function Profile() {
         ) : (
           <></>
         )}
-        {adminrights == 0 ? (
+        {adminrights == 1 ? (
           <button className={styles.normalbutton} onClick={() => formOpen()}>
             BLOCK
+          </button>
+        ) : (
+          <></>
+        )}
+        {adminrights == 1 ? (
+          <button
+            className={styles.normalbutton}
+            onClick={() => activeSwitch(data.id)}
+          >
+            {active ? "DEACTIVATE" : "ACTIVATE"}
           </button>
         ) : (
           <></>

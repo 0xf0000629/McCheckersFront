@@ -225,7 +225,7 @@ export default function Homepage() {
       if (modpriv == 0) {
         if (data[index].players.length < 2) {
           const response = await fetch(process.env.REQUEST + "/" + id, {
-            method: "POST",
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
