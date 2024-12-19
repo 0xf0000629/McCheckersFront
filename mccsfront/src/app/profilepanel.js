@@ -2,14 +2,29 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function ProfilePanel(name){
+export default function ProfilePanel(name) {
+  const router = useRouter();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const togglePanel = () => {
-    setIsPanelOpen((prev) => !prev);
+    setIsPanelOpen(prev => !prev);
   };
 
-  const router = useRouter();
+  const logout = async () => {
+    const response = await fetch(process.env.LOGOUT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${window.localStorage.getItem("authToken")}`,
+      },
+    });
+    window.localStorage.removeItem("authToken");
+    if (response.ok) {
+      console.log("logged out");
+      router.push("/");
+    } else console.log(response);
+  };
+
   return (
     <div>
       {/* Trigger Button */}
@@ -35,24 +50,28 @@ export default function ProfilePanel(name){
         <button
           onClick={() => router.push("/profile")}
           className={styles.maxbutton}
-        >My profile</button>
+        >
+          My profile
+        </button>
         <button
           onClick={() => router.push("/myrequests")}
           className={styles.maxbutton}
-        >My requests</button>
+        >
+          My requests
+        </button>
         <button
           onClick={() => router.push("/mymatches")}
           className={styles.maxbutton}
-        >My matches</button>
-        <button
-          onClick={togglePanel}
-          className={styles.maxbutton}
         >
+          My matches
+        </button>
+        <button onClick={togglePanel} className={styles.maxbutton}>
           CLOSE
+        </button>
+        <button onClick={() => logout()} className={styles.maxbutton}>
+          logout
         </button>
       </div>
     </div>
   );
-};
-
-
+}

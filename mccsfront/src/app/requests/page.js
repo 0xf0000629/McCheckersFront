@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import styles from "../page.module.css";
@@ -11,35 +11,31 @@ import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
 let basedata = [
   {
-    "id": 1,
-    "room": 234,
-    "building": "ADDRESS",
-    "time": "2020-11-20 11:30:00",
-    "moderator_firstname": "richard",
-    "moderator_secondname": "harrys",
-    "moderator_elo": 2300,
-    "players": [
+    id: 1,
+    room: 234,
+    building: "ADDRESS",
+    time: "2020-11-20 11:30:00",
+    moderator_firstname: "richard",
+    moderator_secondname: "harrys",
+    moderator_elo: 2300,
+    players: [
       {
-        "id": 36,
-        "firstname": "mike",
-        "secondname": "hawk",
-        "elo": 2300,
-      }
-    ]
-  }
+        id: 36,
+        firstname: "mike",
+        secondname: "hawk",
+        elo: 2300,
+      },
+    ],
+  },
 ];
 let basebuilding = [
   {
-    "name": "Joe Mama St.",
-    "rooms": [
-      "100", "101", "102"
-    ]
+    name: "Joe Mama St.",
+    rooms: ["100", "101", "102"],
   },
   {
-    "name": "Mike Oxlong St.",
-    "rooms": [
-      "200", "201", "202"
-    ]
+    name: "Mike Oxlong St.",
+    rooms: ["200", "201", "202"],
   },
 ];
 /*for (let i=2;i<=50;i++){
@@ -69,11 +65,12 @@ let basebuilding = [
   });
 }*/
 export default function Homepage() {
-  const token = window.localStorage.getItem('authToken');
+  const token = window.localStorage.getItem("authToken");
+  const router = useRouter();
   let auth = true;
   if (!token) {
     auth = false;
-    //return;
+    router.push("/");
   }
 
   const [count, setCount] = useState(1);
@@ -82,8 +79,12 @@ export default function Homepage() {
 
   const [formActive, setForm] = useState(false);
 
-  const formOpen = () => {setForm(true);};
-  const formClose = () => {setForm(false);};
+  const formOpen = () => {
+    setForm(true);
+  };
+  const formClose = () => {
+    setForm(false);
+  };
 
   const [data, setData] = useState(basedata);
   const router = useRouter();
@@ -98,71 +99,77 @@ export default function Homepage() {
   });
   
 
-  const increment = () => {if (count < (Math.floor(data.length/20)+1))setCount(count + 1);}
-  const decrement = () => {if (count > 1) setCount(count - 1);}
+  const increment = () => {
+    if (count < Math.floor(data.length / 20) + 1) setCount(count + 1);
+  };
+  const decrement = () => {
+    if (count > 1) setCount(count - 1);
+  };
 
   const fetchBuildings = async () => {
     const response = await fetch(process.env.REQUEST, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       console.log("epic");
       let jsondata = response.json().then(jsondata => {
         let loaded = [];
-        for (let i=0;i<jsondata.length;i++){
+        for (let i = 0; i < jsondata.length; i++) {
           let item = jsondata[i];
           loaded.push({
-            "name": item.id,
-            "rooms": []
+            name: item.id,
+            rooms: [],
           });
-          for (let j=0;j<item.rooms.length;j++){
-            loaded[loaded.length-1].players.push(
-              item.rooms[j]
-            );
+          for (let j = 0; j < item.rooms.length; j++) {
+            loaded[loaded.length - 1].players.push(item.rooms[j]);
           }
         }
         setData(loaded);
       });
-    }
-    else console.log(response);
-  }
+    } else console.log(response);
+  };
   const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       console.log("epic");
       let jsondata = response.json().then(jsondata => {
         let loaded = [];
-        for (let i=0;i<jsondata.length;i++){
+        for (let i = 0; i < jsondata.length; i++) {
           let item = jsondata[i];
           loaded.push({
-            "id": item.id,
-            "room": item.roomId,
-            "building": "",
-            "time": item.dateTime,
-            "moderator_id": item.moderator?.id,
-            "moderator_firstname": item.moderator?.name,
-            "moderator_secondname": item.moderator?.surname,
-            "moderator_elo": item.moderator?.elo,
-            "players": []
+            id: item.id,
+            room: item.roomId,
+            building: "",
+            time: item.dateTime,
+            moderator_id: item.moderator?.id,
+            moderator_firstname: item.moderator?.name,
+            moderator_secondname: item.moderator?.surname,
+            moderator_elo: item.moderator?.elo,
+            players: [],
           });
-          for (let j=0;j<item.participants.length;j++){
-            loaded[loaded.length-1].players.push({
-              "id": item.participants[j].id,
-              "firstname": item.participants[j].name,
-              "secondname": item.participants[j].surname,
-              "elo": item.participants[j].elo,
+          for (let j = 0; j < item.participants.length; j++) {
+            loaded[loaded.length - 1].players.push({
+              id: item.participants[j].id,
+              firstname: item.participants[j].name,
+              secondname: item.participants[j].surname,
+              elo: item.participants[j].elo,
             });
           }
         }
         setData(loaded);
       });
-    }
-    else console.log(response);
-  }
+    } else console.log(response);
+  };
   const fetchMe = async () => {
     if (localStorage.getItem("me") != undefined){
       let loadme = localStorage.getItem("me");
@@ -178,99 +185,121 @@ export default function Homepage() {
     fetchMe();
   }, []);
 
-  const create_req = async (e) => {
+  const create_req = async e => {
     e.preventDefault();
     formClose();
     const formData = new FormData(e.target);
     const reqdata = Object.fromEntries(formData.entries());
 
-    const response = await fetch(process.env.REQUEST+'/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-      body: JSON.stringify({ roomId: Number(reqdata.room), dateTime: reqdata.time}),
+    const response = await fetch(process.env.REQUEST + "/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        roomId: Number(reqdata.room),
+        dateTime: reqdata.time,
+      }),
     });
 
-    if (response.ok){
+    if (response.ok) {
       fetchReqs();
-    }
-    else console.log(response);
-  }
+    } else console.log(response);
+  };
 
-  async function tryjoin(id, modpriv){
+  async function tryjoin(id, modpriv) {
     const index = data.findIndex(item => item.id === id);
-    if (index !== -1){
-      if (modpriv == 0){
-        if (data[index].players.length < 2){
-          const response = await fetch(process.env.REQUEST + '/' + id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+    if (index !== -1) {
+      if (modpriv == 0) {
+        if (data[index].players.length < 2) {
+          const response = await fetch(process.env.REQUEST + "/" + id, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           });
-          if (response.ok)
-            alert("cool");
+          if (response.ok) alert("cool");
           else console.log(response);
-        }
-        else alert("this request is full!");
-      }
-      else{
-        if (data[index].moderator_id == undefined){
-          const response = await fetch(process.env.REQUEST + '/' + id, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+        } else alert("this request is full!");
+      } else {
+        if (data[index].moderator_id == undefined) {
+          const response = await fetch(process.env.REQUEST + "/" + id, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           });
-          if (response.ok)
-            alert("cool");
+          if (response.ok) alert("cool");
           else console.log(response);
-        }
-        else alert("this request already has a moderator in charge!");
+        } else alert("this request already has a moderator in charge!");
       }
-    }
-    else alert("this request doesn't exist");
+    } else alert("this request doesn't exist");
   }
-
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-          <EpicForm
-            isOpen={formActive}
-            onClose={formClose}
-            onSubmit={create_req}
-          />
-          <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
-          <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
-          <button className={styles.maxbutton} onClick={() => router.push("/leaderboard")}>LEADERBOARDS</button>
-          <ProfilePanel name={me.firstname}/>
+        <EpicForm
+          isOpen={formActive}
+          onClose={formClose}
+          onSubmit={create_req}
+        />
+        <button
+          className={styles.maxbutton}
+          onClick={() => router.push("/requests")}
+        >
+          REQUESTS
+        </button>
+        <button
+          className={styles.maxbutton}
+          onClick={() => router.push("/matches")}
+        >
+          MATCHES
+        </button>
+        <button
+          className={styles.maxbutton}
+          onClick={() => router.push("/leaderboard")}
+        >
+          LEADERBOARDS
+        </button>
+        <ProfilePanel name={me.firstname} />
       </header>
       <main className={styles.main}>
         <h1>AVAILABLE REQUESTS</h1>
-        {auth == false ? (<h3>not authenticated</h3>) : <></>}
+        {auth == false ? <h3>not authenticated</h3> : <></>}
         <button className={styles.roundbutton} onClick={() => formOpen()}>
           +
         </button>
         <div className={styles.req}>
-          {
-          data.slice((count-1)*20, (count)*20).map((request) => (
-            <RequestComp 
+          {data.slice((count - 1) * 20, count * 20).map(request => (
+            <RequestComp
               id={request.id}
-              place={{"room": request.room, "building": request.building}}
+              place={{ room: request.room, building: request.building }}
               time={request.time}
-              mod={{"id": request.moderator_id, "surname": request.moderator_secondname, "name": request.moderator_firstname, "elo": request.moderator_elo}}
+              mod={{
+                id: request.moderator_id,
+                surname: request.moderator_secondname,
+                name: request.moderator_firstname,
+                elo: request.moderator_elo,
+              }}
               players={request.players}
               key={request.id}
               joinbutton={() => tryjoin(request.id, modpriv)}
             />
-          ))
-          }
+          ))}
         </div>
       </main>
       <footer className={styles.footer}>
-          <button className={styles.roundbutton} onClick={decrement}>
-            -
-          </button>
-          <h1>{count}</h1>
-          <button className={styles.roundbutton} onClick={increment}>
-            +
-          </button>
+        <button className={styles.roundbutton} onClick={decrement}>
+          -
+        </button>
+        <h1>{count}</h1>
+        <button className={styles.roundbutton} onClick={increment}>
+          +
+        </button>
       </footer>
     </div>
   );
