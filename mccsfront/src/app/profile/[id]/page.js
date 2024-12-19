@@ -26,7 +26,6 @@ export default function Profile() {
   }
   const params = useParams();
   const id = params.id;
-  const [adminrights, setAdmin] = useState(0);
 
   const [ismod, setMod] = useState(false);
   const [active, setActive] = useState(false);

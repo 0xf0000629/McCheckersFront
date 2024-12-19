@@ -66,7 +66,6 @@ let basebuilding = [
 }*/
 export default function Homepage() {
   const token = window.localStorage.getItem("authToken");
-  const router = useRouter();
   let auth = true;
   if (!token) {
     auth = false;
