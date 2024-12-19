@@ -9,14 +9,6 @@ import ProfilePanel from "../profilepanel.js";
 import { useRouter } from "next/navigation";
 import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
-let me = {
-  "id": -1,
-  "firstname": "Guest",
-  "secondname": "hawk",
-  "elo": 2300,
-  "active": true,
-  "ismod": true
-}
 let basedata = [
   {
     "id": 1,
@@ -79,7 +71,15 @@ export default function Homepage() {
   const [count, setCount] = useState(1);
 
   const [modpriv, setmodpriv] = useState(0);
-  const [reload, setReload] = useState(false);
+  const [reroll, setReroll] = useState(0);
+  const [me, setMe] = useState({
+    "id": -1,
+    "firstname": "Guest",
+    "secondname": "hawk",
+    "elo": 2300,
+    "active": true,
+    "ismod": false
+  });
 
   const [formActive, setForm] = useState(false);
   const [reqfocus, setRF] = useState(-1);
@@ -137,22 +137,10 @@ export default function Homepage() {
   }
 
   const fetchMe = async () => {
-    const response = await fetch(process.env.USER+"/me", {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-    });
-    if (response.ok) {
-      console.log("got you");
-      let jsondata = response.json().then(jsondata => {
-        me.id = jsondata.id;
-        me.firstname = jsondata.name;
-        me.secondname = jsondata.surname;
-        me.elo = jsondata.elo;
-        me.active = jsondata.active;
-        me.ismod = jsondata.isModerator;
-      });
+    if (localStorage.getItem("me") != undefined){
+      let loadme = localStorage.getItem("me");
+      setMe(me);
     }
-    else console.log(response);
   }
 
   console.log("redraw");

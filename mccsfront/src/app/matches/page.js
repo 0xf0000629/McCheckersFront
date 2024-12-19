@@ -9,13 +9,6 @@ import ProfilePanel from "../profilepanel";
 import { useRouter } from "next/navigation";
 import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
-let me = {
-  "id": -1,
-  "firstname": "Guest",
-  "secondname": "hawk",
-  "elo": 2300,
-  "active": true
-}
 let basedata = [
   {
     "request":{
@@ -56,7 +49,6 @@ export default function MatchPage() {
   const [count, setCount] = useState(1);
 
   const [modpriv, setmodpriv] = useState(0);
-  const [reload, setReload] = useState(false);
 
   const [formActive, setForm] = useState(false);
 
@@ -64,69 +56,68 @@ export default function MatchPage() {
   const formClose = () => {setForm(false);};
 
   const [data, setData] = useState(basedata);
+  const [reroll, setReroll] = useState(0);
   const router = useRouter();
+  const [me, setMe] = useState({
+    "id": -1,
+    "firstname": "Guest",
+    "secondname": "hawk",
+    "elo": 2300,
+    "active": true,
+    "ismod": false
+  });
   
 
   const increment = () => {if (count < (Math.floor(data.length/20)+1))setCount(count + 1);}
   const decrement = () => {if (count > 1) setCount(count - 1);}
 
   const fetchReqs = async () => {
-    const response = await fetch(process.env.REQUEST, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-    });
-    if (response.ok) {
-      console.log("epic");
-      let jsondata = response.json().then(jsondata => {
-        let loaded = [];
-        for (let i=0;i<jsondata.length;i++){
-          let item = jsondata[i];
-          loaded.push({
-            "id": item.request.id,
-            "success": item.isSuccess,
-            "winner": {
-              "id": item.winner.id,
-              "firstname": item.winner.name,
-              "secondname": item.winner.surname,
-              "elo": item.winner.elo
-            },
-            "loser": {
-              "id": item.loser.id,
-              "firstname": item.loser.name,
-              "secondname": item.loser.surname,
-              "elo": item.loser.elo
-            },
-            "winnerscore": item.winnerScore,
-            "loserscore": item.loserScore,
-            "remark": item.remark,
-            "moderator_id": item.moderator?.id,
-            "moderator_firstname": item.moderator?.name,
-            "moderator_secondname": item.moderator?.surname,
-            "moderator_elo": item.moderator?.elo,
-          });
-        }
-        setData(loaded);
+    try {
+      const response = await fetch(process.env.REQUEST, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
+      if (response.ok) {
+        console.log("epic");
+        let jsondata = response.json().then(jsondata => {
+          let loaded = [];
+          for (let i=0;i<jsondata.length;i++){
+            let item = jsondata[i];
+            loaded.push({
+              "id": item.request.id,
+              "success": item.isSuccess,
+              "winner": {
+                "id": item.winner.id,
+                "firstname": item.winner.name,
+                "secondname": item.winner.surname,
+                "elo": item.winner.elo
+              },
+              "loser": {
+                "id": item.loser.id,
+                "firstname": item.loser.name,
+                "secondname": item.loser.surname,
+                "elo": item.loser.elo
+              },
+              "winnerscore": item.winnerScore,
+              "loserscore": item.loserScore,
+              "remark": item.remark,
+              "moderator_id": item.moderator?.id,
+              "moderator_firstname": item.moderator?.name,
+              "moderator_secondname": item.moderator?.surname,
+              "moderator_elo": item.moderator?.elo,
+            });
+          }
+          setData(loaded);
+        });
+      }
     }
-    else console.log(response);
+    catch (e) {console.log(e);}
   }
   const fetchMe = async () => {
-    const response = await fetch(process.env.USER+"/me", {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-    });
-    if (response.ok) {
-      console.log("got you");
-      let jsondata = response.json().then(jsondata => {
-        me.id = jsondata.id;
-        me.firstname = jsondata.name;
-        me.secondname = jsondata.surname;
-        me.elo = jsondata.elo;
-        me.active = jsondata.active;
-        me.ismod = jsondata.isModerator;
-      });
+    if (localStorage.getItem("me") != undefined){
+      let loadme = localStorage.getItem("me");
+      setMe(me);
     }
-    else console.log(response);
   }
 
   console.log("redraw");
@@ -134,6 +125,7 @@ export default function MatchPage() {
     // Function to fetch data
     fetchReqs();
     fetchMe();
+    setReroll(reroll+1);
   }, []);
 
   async function tryjoin(id, modpriv){

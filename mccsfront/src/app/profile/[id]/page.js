@@ -7,14 +7,6 @@ import { useParams, useRouter } from "next/navigation";
 import ProfilePanel from "@/app/profilepanel";
 import EpicForm from "./epicform.js";
 
-let me = {
-  "id": -1,
-  "firstname": "Guest",
-  "secondname": "hawk",
-  "elo": 2300,
-  "active": true,
-  "ismod": false
-}
 let data = {
   "id": 0,
   "firstname": "Place",
@@ -34,13 +26,22 @@ export default function Profile() {
   }
   const params = useParams();
   const id = params.id;
-  let adminrights = 0;
+  const [adminrights, setAdmin] = useState(0);
 
   const [ismod, setMod] = useState(false);
   const [active, setActive] = useState(false);
 
   const [formActive, setForm] = useState(false);
   const router = useRouter();
+  const [reroll, setReroll] = useState(0);
+  const [me, setMe] = useState({
+    "id": -1,
+    "firstname": "Guest",
+    "secondname": "hawk",
+    "elo": 2300,
+    "active": true,
+    "ismod": false
+  });
 
   const formOpen = () => {setForm(true);};
   const formClose = () => {setForm(false);};
@@ -76,27 +77,15 @@ export default function Profile() {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
       });
       if (adminreq.ok){
-        adminrights = 1;
+        setAdmin(1);
       }
       else console.log("not an admin...");
     }
     const fetchMe = async () => {
-      const response = await fetch(process.env.USER+"/me", {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-      });
-      if (response.ok) {
-        console.log("got you");
-        let jsondata = response.json().then(jsondata => {
-          me.id = jsondata.id;
-          me.firstname = jsondata.name;
-          me.secondname = jsondata.surname;
-          me.elo = jsondata.elo;
-          me.active = jsondata.active;
-          me.ismod = jsondata.isModerator;
-        });
+      if (localStorage.getItem("me") != undefined){
+        let loadme = localStorage.getItem("me");
+        setMe(me);
       }
-      else console.log(response);
     }
     fetchMe();
     fetchUser();
@@ -206,7 +195,7 @@ export default function Profile() {
         {me.ismod==1 ? (<button className={styles.normalbutton}>REPORT</button>) : (<></>)}
         {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => banswitch(data.id)}>BAN</button>) : (<></>)}
         {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => promoteswitch(data.id)}>PROMOTE</button>) : (<></>)}
-        {adminrights==0 ? (<button className={styles.normalbutton} onClick={() => formOpen()}>BLOCK</button>) : (<></>)}
+        {adminrights==1 ? (<button className={styles.normalbutton} onClick={() => formOpen()}>BLOCK</button>) : (<></>)}
       </footer>
     </div>
   );

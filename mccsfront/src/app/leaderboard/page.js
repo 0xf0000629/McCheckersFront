@@ -24,14 +24,6 @@ let basedata = [
       "matches": 120
     }
   ];
-
-  let me = {
-    "id": -1,
-    "firstname": "Guest",
-    "secondname": "hawk",
-    "elo": 2300,
-    "active": true
-  }
   
 export default function Profile() {
   const token = window.localStorage.getItem('authToken');
@@ -45,30 +37,27 @@ export default function Profile() {
   const [data, setData] = useState(basedata);
 
   const [searchbar, setSearch] = useState("");
+  const [reroll, setReroll] = useState(0);
+  const [me, setMe] = useState({
+    "id": -1,
+    "firstname": "Guest",
+    "secondname": "hawk",
+    "elo": 2300,
+    "active": true,
+    "ismod": false
+  });
+
   const handleSearch = (e) => {setSearch(e.target.value);};
 
   const fetchMe = async () => {
-    const response = await fetch(process.env.USER+"/me", {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
-    });
-    if (response.ok) {
-      console.log("got you");
-      let jsondata = response.json().then(jsondata => {
-        me.id = jsondata.id;
-        me.firstname = jsondata.name;
-        me.secondname = jsondata.surname;
-        me.elo = jsondata.elo;
-        me.active = jsondata.active;
-        me.ismod = jsondata.isModerator;
-      });
+    if (localStorage.getItem("me") != undefined){
+      let loadme = localStorage.getItem("me");
+      setMe(me);
     }
-    else console.log(response);
   }
 
-  useEffect(() => {
-    // Function to fetch data
-    const fetchLead = async () => {
+  const fetchLead = async () => {
+    try{
       const response = await fetch(process.env.LEADERBOARD, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
@@ -91,10 +80,17 @@ export default function Profile() {
           setData(loaded);
         });
       }
-      else console.log(response);
     }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    // Function to fetch data
     fetchLead();
     fetchMe();
+    setReroll(reroll+1);
   }, []);
 
   const sendtoprofile = (id) => {
@@ -103,6 +99,7 @@ export default function Profile() {
 
   return (
     <div className={styles.page}>
+      {console.log("redraw")}
       <header className={styles.header}>
           <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
           <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
@@ -110,7 +107,7 @@ export default function Profile() {
           <ProfilePanel name={me.firstname}/>
       </header>
       <main className={styles.main}>
-        <h1>LEADERBOARDS</h1>
+        <h1>LEADERBOARDS {me.elo}</h1>
         {auth == false ? (<h3>not authenticated</h3>) : <></>}
         <input
               type="text"
