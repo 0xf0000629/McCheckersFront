@@ -16,6 +16,8 @@ export default function Home() {
   const [login, setlogin] = useState("");
   const [password, setpassword] = useState("");
 
+  const [me, setMe] = useState();
+
   const [thesurname, setsurname] = useState("");
   const [thename, setname] = useState("");
   const [thephone, setphone] = useState("");
@@ -43,6 +45,26 @@ export default function Home() {
     setcountry(e.target.value);
   };
 
+  function fetchMe(info){
+    const response = fetch(process.env.USER+"/me", {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${info}`}
+    });
+    if (response.ok) {
+      console.log("got you");
+      let jsondata = response.json().then(jsondata => setMe({
+          "id": jsondata.id,
+          "firstname": jsondata.name,
+          "secondname": jsondata.surname,
+          "elo": jsondata.elo,
+          "active": jsondata.active,
+          "ismod": jsondata.isModerator
+        }));
+      localStorage.setItem("me", me);
+    }
+    else console.log(response);
+  }
+
   const logEmIn = async e => {
     e.preventDefault();
     //alert(`"Login:": ${login}, "Password:": ${password}`);
@@ -54,6 +76,7 @@ export default function Home() {
     if (response.ok) {
       const { token } = await response.json();
       localStorage.setItem("authToken", token);
+      fetchMe(token);
       router.push("/requests");
     } else {
       console.log(response);
@@ -76,8 +99,8 @@ export default function Home() {
     });
     if (response.ok) {
       const { token } = await response.json();
-
       localStorage.setItem("authToken", token);
+      fetchMe(token);
       router.push("/requests");
     } else {
       console.log(response);

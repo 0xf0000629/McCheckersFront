@@ -65,6 +65,12 @@ export default function ProfilePanel(name) {
         >
           My matches
         </button>
+        <button
+          onClick={() => router.push("/mymatches")}
+          className={styles.maxbutton}
+        >
+          My matches
+        </button>
         <button onClick={togglePanel} className={styles.maxbutton}>
           CLOSE
         </button>
