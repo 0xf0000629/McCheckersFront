@@ -122,7 +122,7 @@ export default function Profile() {
         >
           LEADERBOARDS
         </button>
-        <ProfilePanel name={me.firstname} />
+        <ProfilePanel name={me.firstname}  token={token}/>
       </header>
       <main className={styles.main}>
         <h1>LEADERBOARDS</h1>

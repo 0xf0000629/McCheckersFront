@@ -41,7 +41,7 @@ export default function Profile() {
           "phone": player.phoneNumber,
           "elo": player.elo,
           "rank": player.rank,
-          "verified": player.active
+          "active": player.active
         }});
       }
     }
@@ -61,7 +61,7 @@ export default function Profile() {
           <div className={styles.reqin}>
           <Image
             src="/defaultpfp.png"
-            //alt="Description of the image"
+            alt="Profile picture"
             width={200}
             height={200}
           />

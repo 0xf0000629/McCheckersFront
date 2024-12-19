@@ -264,7 +264,7 @@ export default function Homepage() {
         >
           LEADERBOARDS
         </button>
-        <ProfilePanel name={me.firstname} />
+        <ProfilePanel name={me.firstname}  token={token}/>
       </header>
       <main className={styles.main}>
         <h1>AVAILABLE REQUESTS</h1>

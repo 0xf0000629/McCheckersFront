@@ -239,14 +239,14 @@ export default function Profile() {
         >
           LEADERBOARDS
         </button>
-        <ProfilePanel name={me.firstname} />
+        <ProfilePanel name={me.firstname}  token={token}/>
       </header>
       <main className={styles.main}>
         <div className={styles.profcard}>
           <div className={styles.reqin}>
             <Image
               src="/defaultpfp.png"
-              //alt="Description of the image"
+              alt="Profile picture"
               width={200}
               height={200}
             />

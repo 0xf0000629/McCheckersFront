@@ -220,7 +220,7 @@ export default function Homepage() {
           <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
           <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
           <button className={styles.maxbutton} onClick={() => router.push("/leaderboard")}>LEADERBOARDS</button>
-          <ProfilePanel name={me.firstname}/>
+          <ProfilePanel name={me.firstname}  token={token}/>
       </header>
       <main className={styles.main}>
         <h1>MY REQUESTS</h1>

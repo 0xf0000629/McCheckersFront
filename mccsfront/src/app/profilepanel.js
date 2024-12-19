@@ -1,10 +1,12 @@
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function ProfilePanel(name) {
+export default function ProfilePanel(name, token) {
   const router = useRouter();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  const [adminrights, setAdmin] = useState(0);
 
   const togglePanel = () => {
     setIsPanelOpen(prev => !prev);
@@ -24,6 +26,24 @@ export default function ProfilePanel(name) {
       router.push("/");
     } else console.log(response);
   };
+
+  const fetchAdmin = async () => {
+    const adminreq = await fetch(process.env.API + "/admin", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (adminreq.ok){
+      setAdmin(1);
+    }
+    else console.log("not an admin...");
+  }
+
+  useEffect(() => {
+    fetchAdmin();
+  }, []);
 
   return (
     <div>
@@ -65,17 +85,17 @@ export default function ProfilePanel(name) {
         >
           My matches
         </button>
-        <button
-          onClick={() => router.push("/mymatches")}
+        {adminrights == 1 ? <button
+          onClick={() => router.push("/reports")}
           className={styles.maxbutton}
         >
-          My matches
+          Reports
+        </button> : <></>}
+        <button onClick={() => logout()} className={styles.maxbutton}>
+          logout
         </button>
         <button onClick={togglePanel} className={styles.maxbutton}>
           CLOSE
-        </button>
-        <button onClick={() => logout()} className={styles.maxbutton}>
-          logout
         </button>
       </div>
     </div>
