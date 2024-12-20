@@ -2,7 +2,9 @@ import styles from "./page.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function ProfilePanel(name, token) {
+export default function ProfilePanel(props) {
+  const name = props.name;
+  const token = props.token;
   const router = useRouter();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
@@ -35,11 +37,10 @@ export default function ProfilePanel(name, token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (adminreq.ok){
+    if (adminreq.ok) {
       setAdmin(1);
-    }
-    else console.log("not an admin...");
-  }
+    } else console.log("not an admin...");
+  };
 
   useEffect(() => {
     fetchAdmin();
@@ -49,24 +50,17 @@ export default function ProfilePanel(name, token) {
     <div>
       {/* Trigger Button */}
       <button className={styles.profilebutton} onClick={togglePanel}>
-        {name.name[0]}
+        {name[0]}
       </button>
 
       {/* Sliding Panel */}
       <div
+        className={styles.sliding_panel}
         style={{
-          position: "fixed",
-          top: "0",
           right: isPanelOpen ? "0" : "-300px", // Adjust based on your panel width
-          width: "300px",
-          height: "100vh",
-          backgroundColor: "#f4f4f4",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
-          transition: "right 0.3s ease-in-out",
-          padding: "20px",
         }}
       >
-        <h2>hello {name.name}</h2>
+        <h2>hello {name}</h2>
         <button
           onClick={() => router.push("/profile")}
           className={styles.maxbutton}
@@ -85,12 +79,16 @@ export default function ProfilePanel(name, token) {
         >
           My matches
         </button>
-        {adminrights == 1 ? <button
-          onClick={() => router.push("/reports")}
-          className={styles.maxbutton}
-        >
-          Reports
-        </button> : <></>}
+        {adminrights == 1 ? (
+          <button
+            onClick={() => router.push("/reports")}
+            className={styles.maxbutton}
+          >
+            Reports
+          </button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => logout()} className={styles.maxbutton}>
           logout
         </button>

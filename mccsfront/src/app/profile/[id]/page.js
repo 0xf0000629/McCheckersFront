@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import ProfilePanel from "@/app/profilepanel";
 import EpicForm from "./epicform.js";
 
-let data = {
+/* let data = {
   id: 0,
   firstname: "Place",
   secondname: "Holder",
@@ -16,31 +16,36 @@ let data = {
   rank: "GOAT",
   active: true,
   ismod: false,
-};
+}; */
 
 export default function Profile() {
-  const token = window.localStorage.getItem("authToken");
-  if (!token) {
-    console.log("you are not authorized!!!");
-    //return;
-  }
   const params = useParams();
   const id = params.id;
 
   const [ismod, setMod] = useState(false);
   const [active, setActive] = useState(false);
+  const [data, setData] = useState({
+    id: 0,
+    firstname: "Place",
+    secondname: "Holder",
+    phone: "+79009009090",
+    elo: 3333,
+    rank: "GOAT",
+    active: true,
+    ismod: false,
+  });
 
   const [formActive, setForm] = useState(false);
   const [adminrights, setAdmin] = useState(0);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({
-    "id": -1,
-    "firstname": "Guest",
-    "secondname": "hawk",
-    "elo": 2300,
-    "active": true,
-    "ismod": false
+    id: -1,
+    firstname: "Guest",
+    secondname: "hawk",
+    elo: 2300,
+    active: true,
+    ismod: false,
   });
 
   const formOpen = () => {
@@ -51,6 +56,11 @@ export default function Profile() {
   };
 
   useEffect(() => {
+    const token = window.localStorage.getItem("authToken");
+    if (!token) {
+      console.log("you are not authorized!!!");
+      //return;
+    }
     // Function to fetch data
     const fetchUser = async () => {
       const response = await fetch(process.env.USER + "/" + id, {
@@ -62,7 +72,7 @@ export default function Profile() {
       });
       if (response.ok) {
         let info = response.json().then(player => {
-          data = {
+          setData({
             id: player.id,
             firstname: player.name,
             secondname: player.surname,
@@ -71,7 +81,7 @@ export default function Profile() {
             rank: player.rank,
             active: player.active,
             ismod: player.isModerator,
-          };
+          });
           setMod(player.isModerator);
           setActive(player.active);
         });
@@ -85,21 +95,20 @@ export default function Profile() {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (adminreq.ok){
+      if (adminreq.ok) {
         setAdmin(1);
-      }
-      else console.log("not an admin...");
-    }
+      } else console.log("not an admin...");
+    };
     const fetchMe = async () => {
-      if (localStorage.getItem("me") != undefined){
+      if (localStorage.getItem("me") != undefined) {
         let loadme = localStorage.getItem("me");
         setMe(me);
       }
-    }
+    };
     fetchMe();
     fetchUser();
     fetchAdmin();
-  }, []);
+  }, [id, me, data]);
 
   async function activeSwitch(id) {
     if (data.active == false) {
@@ -239,7 +248,7 @@ export default function Profile() {
         >
           LEADERBOARDS
         </button>
-        <ProfilePanel name={me.firstname}  token={token}/>
+        <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
         <div className={styles.profcard}>
