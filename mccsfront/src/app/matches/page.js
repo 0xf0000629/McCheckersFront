@@ -44,8 +44,9 @@ export default function MatchPage() {
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
-    setToken(localStorage.getItem("authToken"));
-    if (!token) {
+    const authToken = localStorage.getItem("authToken");
+    setToken(authToken);
+    if (!authToken) {
       router.push("/");
     }
     fetchReqs();

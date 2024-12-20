@@ -86,8 +86,9 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    setToken(localStorage.getItem("authToken"));
-    if (!token) {
+    const authToken = localStorage.getItem("authToken");
+    setToken(authToken);
+    if (!authToken) {
       router.push("/");
     }
     // Function to fetch data

@@ -127,8 +127,9 @@ export default function MatchPage() {
 
   console.log("redraw");
   useEffect(() => {
-    setToken(localStorage.getItem("authToken"));
-    if (!token) {
+    const authToken = localStorage.getItem("authToken");
+    setToken(authToken);
+    if (!authToken) {
       router.push("/");
     }
     // Function to fetch data

@@ -23,8 +23,9 @@ export default function Profile() {
   const [token, setToken] = useState(undefined);
 
   useEffect(() => {
-    setToken(localStorage.getItem("authToken"));
-    if (!token) {
+    const authToken = localStorage.getItem("authToken");
+    setToken(authToken);
+    if (!authToken) {
       router.push("/");
     }
     const id = window.sessionStorage.getItem("focus");
