@@ -120,6 +120,10 @@ export default function MatchPage() {
 
   console.log("redraw");
   useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+    if (!token) {
+      router.push("/");
+    }
     // Function to fetch data
     fetchMe();
     fetchReqs();
@@ -167,7 +171,6 @@ export default function MatchPage() {
       </header>
       <main className={styles.main}>
         <h1>AVAILABLE MATCHES</h1>
-        {auth == false ? (<h3>not authenticated</h3>) : <></>}
         <div className={styles.req}>
           {
           data.filter(req => req.winner.id === me.id || req.loser.id === me.id || req?.moderator_id === me.id).slice((count-1)*20, (count)*20).map((request) => (

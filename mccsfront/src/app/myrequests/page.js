@@ -145,6 +145,10 @@ export default function Homepage() {
 
   console.log("redraw");
   useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+    if (!token) {
+      router.push("/");
+    }
     fetchMe();
     fetchReqs();
   }, []);

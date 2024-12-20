@@ -43,12 +43,7 @@ let basedata = [
   });
 }*/
 export default function Homepage() {
-  const token = window.localStorage.getItem('authToken');
-  let auth = true;
-  if (!token) {
-    auth = false;
-    //return;
-  }
+  const [token, setToken] = useState(undefined);
 
   const [count, setCount] = useState(1);
 
@@ -118,6 +113,10 @@ export default function Homepage() {
 
   console.log("redraw");
   useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+    if (!token) {
+      router.push("/");
+    }
     // Function to fetch data
     fetchReqs();
     fetchMe();

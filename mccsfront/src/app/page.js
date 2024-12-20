@@ -8,10 +8,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
 
-  const token = window.localStorage.getItem("authToken");
-  if (token || !(token == undefined)) {
-    router.push("/requests");
-  }
+  const [token, setToken] = useState(undefined);
 
   const [login, setlogin] = useState("");
   const [password, setpassword] = useState("");
@@ -110,6 +107,13 @@ export default function Home() {
       console.log(response);
     }
   };
+  
+  useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+    if (token || !(token == undefined)) {
+      router.push("/requests");
+    }
+  },[]);
 
   return (
     <div className={styles.page}>

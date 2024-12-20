@@ -20,14 +20,14 @@ export default function Profile() {
   const router = useRouter();
 
   const [data, setData] = useState(undefined);
+  const [token, setToken] = useState(undefined);
 
   useEffect(() => {
-    const id = window.sessionStorage.getItem("focus");
-    const token = window.localStorage.getItem("authToken");
+    setToken(localStorage.getItem("authToken"));
     if (!token) {
-      console.log("you are not authorized!!!");
-      //return;
+      router.push("/");
     }
+    const id = window.sessionStorage.getItem("focus");
     // Function to fetch data
     const fetchUser = async () => {
       const response = await fetch(process.env.USER + "/me", {

@@ -26,12 +26,8 @@ let basedata = [
   ];
   
 export default function Profile() {
-  const token = window.localStorage.getItem("authToken");
-  let auth = true;
-  if (!token) {
-    auth = false;
-    //return;
-  }
+
+  const [token, setToken] = useState(undefined);
 
   const router = useRouter();
   const [data, setData] = useState(basedata);
@@ -90,6 +86,10 @@ export default function Profile() {
   }
 
   useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+    if (!token) {
+      router.push("/");
+    }
     // Function to fetch data
     fetchLead();
     fetchMe();

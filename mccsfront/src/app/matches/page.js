@@ -44,11 +44,9 @@ export default function MatchPage() {
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
-    setToken(window.localStorage.getItem("authToken"));
-    setAuth(true);
+    setToken(localStorage.getItem("authToken"));
     if (!token) {
-      setAuth(false);
-      //return;
+      router.push("/");
     }
     fetchReqs();
     fetchMe();
@@ -192,7 +190,6 @@ export default function MatchPage() {
       </header>
       <main className={styles.main}>
         <h1>AVAILABLE MATCHES</h1>
-        {auth == false ? <h3>not authenticated</h3> : <></>}
         <div className={styles.req}>
           {data.slice((count - 1) * 20, count * 20).map((request, i) => (
             <MatchComp key={i} match={request} />

@@ -21,7 +21,7 @@ import EpicForm from "./epicform.js";
 export default function Profile() {
   const params = useParams();
   const id = params.id;
-
+  const [token, setToken] = useState(undefined);
   const [ismod, setMod] = useState(false);
   const [active, setActive] = useState(false);
   const [data, setData] = useState({
@@ -56,10 +56,9 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    const token = window.localStorage.getItem("authToken");
+    setToken(localStorage.getItem("authToken"));
     if (!token) {
-      console.log("you are not authorized!!!");
-      //return;
+      router.push("/");
     }
     // Function to fetch data
     const fetchUser = async () => {

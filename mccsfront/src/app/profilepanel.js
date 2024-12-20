@@ -43,6 +43,10 @@ export default function ProfilePanel(props) {
   };
 
   useEffect(() => {
+setToken(localStorage.getItem("authToken"));
+    if (!token) {
+      router.push("/");
+    }
     fetchAdmin();
   }, []);
 
