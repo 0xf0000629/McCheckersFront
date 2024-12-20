@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -107,13 +107,13 @@ export default function Home() {
       console.log(response);
     }
   };
-  
+
   useEffect(() => {
     setToken(localStorage.getItem("authToken"));
     if (token || !(token == undefined)) {
       router.push("/requests");
     }
-  },[]);
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -122,16 +122,11 @@ export default function Home() {
           <h1>Login</h1>
 
           {/* Buttons to Switch Forms */}
-          <div style={{ marginBottom: "20px" }}>
+          <div>
             <button
               onClick={() => {
                 if (activeForm === "login") setActiveForm("register");
                 else setActiveForm("login");
-              }}
-              style={{
-                padding: "10px",
-                marginRight: "10px",
-                background: activeForm === "login" ? "lightblue" : "white",
               }}
             >
               {activeForm === "login" ? "No account?" : "Already registered?"}
@@ -145,7 +140,6 @@ export default function Home() {
                 placeholder="Username..."
                 value={login}
                 onChange={handleLog}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
               <input
@@ -153,12 +147,9 @@ export default function Home() {
                 placeholder="Password..."
                 value={password}
                 onChange={handlePass}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
-              <button type="submit" style={{ padding: "8px" }}>
-                get me in
-              </button>
+              <button type="submit">get me in</button>
             </form>
           )}
 
@@ -169,7 +160,6 @@ export default function Home() {
                 placeholder="Surname..."
                 value={thesurname}
                 onChange={handleSN}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
               <input
@@ -177,7 +167,6 @@ export default function Home() {
                 placeholder="Name..."
                 value={thename}
                 onChange={handleN}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
               <input
@@ -185,14 +174,9 @@ export default function Home() {
                 placeholder="Phone number..."
                 value={thephone}
                 onChange={handlePH}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
-              <select
-                value={thectr}
-                onChange={handleCTR}
-                style={{ padding: "8px", marginRight: "10px" }}
-              >
+              <select value={thectr} onChange={handleCTR}>
                 <option value="" disabled>
                   {" "}
                   select...{" "}
@@ -205,7 +189,6 @@ export default function Home() {
                 placeholder="Username..."
                 value={login}
                 onChange={handleLog}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
               <input
@@ -213,12 +196,9 @@ export default function Home() {
                 placeholder="Password..."
                 value={password}
                 onChange={handlePass}
-                style={{ padding: "8px", marginRight: "10px" }}
               />
               <br />
-              <button type="submit" style={{ padding: "8px" }}>
-                register me
-              </button>
+              <button type="submit">register me</button>
             </form>
           )}
         </div>

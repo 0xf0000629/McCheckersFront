@@ -122,7 +122,6 @@
   border: none;
   border: 1px solid transparent;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -73,25 +73,36 @@ export default function Homepage() {
 
   const [formActive, setForm] = useState(false);
 
+  const [data, setData] = useState(basedata);
+  const router = useRouter();
+  const [reroll, setReroll] = useState(0);
+  const [me, setMe] = useState({
+    id: -1,
+    firstname: "Guest",
+    secondname: "hawk",
+    elo: 2300,
+    active: true,
+    ismod: false,
+  });
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    setToken(authToken);
+    if (!authToken) {
+      router.push("/");
+    }
+    // Function to fetch data
+    fetchBuildings();
+    fetchReqs();
+    fetchMe();
+  }, []);
+
   const formOpen = () => {
     setForm(true);
   };
   const formClose = () => {
     setForm(false);
   };
-
-  const [data, setData] = useState(basedata);
-  const router = useRouter();
-  const [reroll, setReroll] = useState(0);
-  const [me, setMe] = useState({
-    "id": -1,
-    "firstname": "Guest",
-    "secondname": "hawk",
-    "elo": 2300,
-    "active": true,
-    "ismod": false
-  });
-  
 
   const increment = () => {
     if (count < Math.floor(data.length / 20) + 1) setCount(count + 1);
@@ -165,23 +176,13 @@ export default function Homepage() {
     } else console.log(response);
   };
   const fetchMe = async () => {
-    if (localStorage.getItem("me") != undefined){
+    if (localStorage.getItem("me") != undefined) {
       let loadme = localStorage.getItem("me");
       setMe(me);
     }
-  }
+  };
 
   console.log("redraw");
-  useEffect(() => {
-    setToken(localStorage.getItem("authToken"));
-    if (!token) {
-      router.push("/");
-    }
-    // Function to fetch data
-    fetchBuildings();
-    fetchReqs();
-    fetchMe();
-  }, []);
 
   const create_req = async e => {
     e.preventDefault();
@@ -263,11 +264,10 @@ export default function Homepage() {
         >
           LEADERBOARDS
         </button>
-        <ProfilePanel name={me.firstname}  token={token}/>
+        <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
         <h1>AVAILABLE REQUESTS</h1>
-        {auth == false ? <h3>not authenticated</h3> : <></>}
         <button className={styles.roundbutton} onClick={() => formOpen()}>
           +
         </button>
