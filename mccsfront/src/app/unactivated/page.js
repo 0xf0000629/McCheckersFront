@@ -55,7 +55,7 @@ const [loading, setLoading] = useState(true);
 
   const fetchLead = async () => {
     try {
-      const response = await fetch(process.env.LEADERBOARD, {
+      const response = await fetch(process.env.ADMIN+"/get-inactive-users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -72,9 +72,10 @@ const [loading, setLoading] = useState(true);
             loaded.push({
               id: item.id,
               username: item.username,
+              name: item.name,
+              surname: item.surname,
               elo: item.elo,
               rank: item.rank,
-              matches: item.totalMatches,
             });
           }
           setData(loaded);
@@ -166,7 +167,7 @@ const [loading, setLoading] = useState(true);
                 onClick={() => sendtoprofile(player.id)}
               >
                 <div className={styles.leader}>
-                  <h2> {player.username} </h2>
+                  <h2> {player.username + "(" + player.name + " " + player.surname + ")"} </h2>
                 </div>
                 <div className={styles.leader}>
                   <h2>
@@ -175,14 +176,13 @@ const [loading, setLoading] = useState(true);
                   </h2>
                 </div>
                 <div className={styles.leader}>
-                  <h2> Matches played: {player.matches} </h2>
-                </div>
                   <button
                     className={styles.normalbutton}
                     onClick={() => activate(player.id)}
                   >
                     ACTIVATE
                   </button>
+                </div>
               </button>
             ))}
         </div>
