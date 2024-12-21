@@ -128,9 +128,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (token != undefined){
+    if (token != undefined && token != null){
       fetchAdmin(token);
-      if (adminstate != undefined) {
+      if (adminstate != undefined && adminstate != null) {
         fetchMe(token);
       }
     }
