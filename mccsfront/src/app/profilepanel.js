@@ -96,6 +96,16 @@ export default function ProfilePanel(props) {
         ) : (
           <></>
         )}
+        {me.isadmin == 1 ? (
+          <button
+            onClick={() => router.push("/unactivated")}
+            className={styles.maxbutton}
+          >
+            Unactivated users
+          </button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => logout()} className={styles.maxbutton}>
           logout
         </button>

@@ -334,7 +334,7 @@ const [loading, setLoading] = useState(true);
               modbutton={
                 request.players[0]?.id === me.id ||
                 request.players[1]?.id === me.id ||
-                request?.moderator_id === me.id
+                request?.moderator_id === me.id ? true : false
               }
             />
           ))}
