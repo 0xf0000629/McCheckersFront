@@ -123,12 +123,12 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.ctas}>
+        <div className={styles.profcard}>
           <h1>Login</h1>
 
           {/* Buttons to Switch Forms */}
           <div>
-            <button
+            <button className={styles.normalbutton}
               onClick={() => {
                 if (activeForm === "login") setActiveForm("register");
                 else setActiveForm("login");
@@ -154,7 +154,7 @@ export default function Home() {
                 onChange={handlePass}
               />
               <br />
-              <button type="submit">get me in</button>
+              <button type="submit" className={styles.normalbutton}>get me in</button>
             </form>
           )}
 
@@ -203,7 +203,7 @@ export default function Home() {
                 onChange={handlePass}
               />
               <br />
-              <button type="submit">register me</button>
+              <button type="submit"  className={styles.normalbutton}>register me</button>
             </form>
           )}
         </div>
