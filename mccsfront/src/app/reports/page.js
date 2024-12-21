@@ -124,14 +124,8 @@ export default function Homepage() {
   const sendtoprofile = id => {
     router.push("/profile/" + id);
   };
-  if (!me.isadmin)
-    return (
-      <div className={styles.page}>
-        <h1>forbidden</h1>
-      </div>
-    );
-  else
-    return (
+
+  return (
       <div className={styles.page}>
         <header className={styles.header}>
           <button
@@ -156,7 +150,7 @@ export default function Homepage() {
         </header>
         <main className={styles.main}>
           <h1>REPORTS</h1>
-          {auth == false ? <h3>not authenticated</h3> : <></>}
+          <h3>{me.isadmin}</h3>
           <div className={styles.req}>
           <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
             {data.slice((count - 1) * 20, count * 20).map(request => (
