@@ -87,7 +87,7 @@ export default function Home() {
 
   const logEmIn = async e => {
     e.preventDefault();
-    //alert(`"Login:": ${login}, "Password:": ${password}`);
+    //console.log(`"Login:": ${login}, "Password:": ${password}`);
     const response = await fetch(process.env.AUTH + "/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

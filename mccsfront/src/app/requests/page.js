@@ -227,7 +227,7 @@ const [loading, setLoading] = useState(true);
           });
           if (response.ok) console.log("joined request");
           else console.log(response);
-        } else alert("this request is full!");
+        } else console.log("this request is full!");
       } else {
         if (data[index].moderator_id == undefined) {
           const response = await fetch(process.env.REQUEST + "/" + id, {
@@ -239,9 +239,10 @@ const [loading, setLoading] = useState(true);
           });
           if (response.ok) console.log("joined request");
           else console.log(response);
-        } else alert("this request already has a moderator in charge!");
+        } else console.log("this request already has a moderator in charge!");
       }
-    } else alert("this request doesn't exist");
+    } else console.log("this request doesn't exist");
+    setReroll(reroll+1);
   }
 
   async function leave(id, modpriv) {
@@ -272,7 +273,7 @@ const [loading, setLoading] = useState(true);
           fetchReqs();
         } else console.log(response);
       }
-    } else alert("this request doesn't exist");
+    } else console.log("this request doesn't exist");
   }
 
   return (

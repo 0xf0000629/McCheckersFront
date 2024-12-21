@@ -205,7 +205,7 @@ const [loading, setLoading] = useState(true);
           },
         });
         if (response.ok) {
-          alert("cool");
+          console.log("cool");
           fetchReqs();
         } else console.log(response);
       } else {
@@ -217,11 +217,11 @@ const [loading, setLoading] = useState(true);
           },
         });
         if (response.ok) {
-          alert("cool");
+          console.log("cool");
           fetchReqs();
         } else console.log(response);
       }
-    } else alert("this request doesn't exist");
+    } else console.log("this request doesn't exist");
   }
 
   return (
