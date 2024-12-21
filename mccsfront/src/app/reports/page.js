@@ -124,10 +124,10 @@ export default function Homepage() {
   const sendtoprofile = id => {
     router.push("/profile/" + id);
   };
-  if (me.isadmin == 0)
+  if (!me.isadmin)
     return (
       <div className={styles.page}>
-        <h1>you are not an admin</h1>
+        <h1>forbidden</h1>
       </div>
     );
   else
