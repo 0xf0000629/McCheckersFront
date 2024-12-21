@@ -180,7 +180,7 @@ export default function Homepage() {
         loserId: matchp[1 - reqdata.winner].id,
         winnerScore: reqdata.score1,
         loserScore: reqdata.score2,
-        remark: reqdata.remake,
+        remark: reqdata.remarks,
         moderatorId: me.id,
       }),
     });

@@ -4,14 +4,26 @@ import { useEffect } from 'react';
 
 export default function EpicForm({ onClose, onSubmit, players }){
   console.log(players);
+  const [options1, setOptions1] = useState(['0', '1', '2']);
+  const [options2, setOptions2] = useState(['0', '1', '2']);
   const [loser, loserSet] = useState(0);
   const [winner, winnerSet] = useState(0);
 
   const handleL = (event) => {
-    loserSet(event.target.checked);
+    loserSet(event.target.value);
+    if (event.target.value === '2') {
+      setOptions1(['0', '1']);
+    } else {
+      setOptions1(['0', '1', '2']);
+    }
   };
   const handleW = (event) => {
-    winnerSet(event.target.checked);
+    winnerSet(event.target.value);
+    if (event.target.value === '2') {
+      setOptions2(['0', '1']);
+    } else {
+      setOptions2(['0', '1', '2']);
+    }
   };
   
   return (
@@ -36,14 +48,18 @@ export default function EpicForm({ onClose, onSubmit, players }){
           </div>
 
           <select onChange={handleW} id="score1" name="score1" style={{ padding: '8px', marginRight: '10px' }}>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              {loser != "2" ? <option value="2">2</option> : <></>}
+            {options1.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
           <select onChange={handleL} id="score2" name="score2" style={{ padding: '8px', marginRight: '10px' }}>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              {winner != "2" ? <option value="2">2</option> : <></>}
+            {options2.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
 
           <div className={styles.formGroup}>
