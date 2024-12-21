@@ -100,7 +100,7 @@ export default function Homepage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async token => {
+  const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -142,7 +142,7 @@ export default function Homepage() {
   const fetchMe = async () => {
     if (localStorage.getItem("me") != undefined) {
       let loadme = JSON.parse(localStorage.getItem("me"));
-      setMe(me);
+      setMe(loadme);
     }
   };
 

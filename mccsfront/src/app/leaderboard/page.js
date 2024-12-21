@@ -154,7 +154,7 @@ export default function Profile() {
                   </h2>
                 </div>
                 <div className={styles.leader}>
-                  <h2> Matches won: {player.matches} </h2>
+                  <h2> Matches played: {player.matches} </h2>
                 </div>
               </button>
             ))}
