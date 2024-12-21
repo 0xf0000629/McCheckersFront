@@ -142,7 +142,7 @@ export default function Homepage() {
       });
     } else console.log(response);
   };
-  const fetchReqs = async token => {
+  const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -241,6 +241,37 @@ export default function Homepage() {
     } else alert("this request doesn't exist");
   }
 
+  async function leave(id, modpriv) {
+    const index = data.findIndex(item => item.id === id);
+    if (index !== -1) {
+      if (modpriv == 0) {
+        const response = await fetch(process.env.REQUEST + "/" + id, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          alert("cool");
+          fetchReqs();
+        } else console.log(response);
+      } else {
+        const response = await fetch(process.env.REQUEST + "/" + id, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          alert("cool");
+          fetchReqs();
+        } else console.log(response);
+      }
+    } else alert("this request doesn't exist");
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -288,7 +319,9 @@ export default function Homepage() {
               }}
               players={request.players}
               key={request.id}
-              joinbutton={() => tryjoin(request.id, modpriv)}
+              joinbutton={request.players[0]?.id === me.id ||
+                request.players[1]?.id === me.id ||
+                request?.moderator_id === me.id ? () => leave(request.id, modpriv) : () => tryjoin(request.id, modpriv)}
             />
           ))}
         </div>
