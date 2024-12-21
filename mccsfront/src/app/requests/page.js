@@ -228,7 +228,7 @@ const [loading, setLoading] = useState(true);
           if (response.ok) console.log("joined request");
           else console.log(response);
         } else console.log("this request is full!");
-        setReroll(reroll+1);
+        fetchReqs();
       } else {
         if (data[index].moderator_id == undefined) {
           const response = await fetch(process.env.REQUEST + "/" + id, {
@@ -241,7 +241,7 @@ const [loading, setLoading] = useState(true);
           if (response.ok) console.log("joined request");
           else console.log(response);
         } else console.log("this request already has a moderator in charge!");
-        setReroll(reroll+1);
+        fetchReqs();
       }
     } else console.log("this request doesn't exist");
   }
