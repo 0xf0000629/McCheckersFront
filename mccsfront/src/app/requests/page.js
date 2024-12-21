@@ -331,7 +331,7 @@ const [loading, setLoading] = useState(true);
                   ? () => leave(request.id, modpriv)
                   : () => tryjoin(request.id, modpriv)
               }
-              in={
+              modbutton={
                 request.players[0]?.id === me.id ||
                 request.players[1]?.id === me.id ||
                 request?.moderator_id === me.id
