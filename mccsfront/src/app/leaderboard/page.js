@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProfilePanel from "../profilepanel";
@@ -28,6 +29,7 @@ export default function Profile() {
 
   const router = useRouter();
   const [data, setData] = useState([]);
+const [loading, setLoading] = useState(true);
 
   const [searchbar, setSearch] = useState("");
   const [reroll, setReroll] = useState(0);
@@ -62,6 +64,7 @@ export default function Profile() {
       });
       if (response.ok) {
         console.log("epic");
+        setLoading(false);
         let jsondata = response.json().then(jsondata => {
           let loaded = [];
           for (let i = 0; i < jsondata.length; i++) {
@@ -135,6 +138,7 @@ export default function Profile() {
           style={{ padding: "8px", marginRight: "10px" }}
         />
         <div className={styles.reqin}>
+          <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
           {data
             .filter(item => item.username.startsWith(searchbar))
             .slice(0, 100)

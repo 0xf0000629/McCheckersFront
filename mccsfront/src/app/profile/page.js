@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProfilePanel from "../profilepanel";

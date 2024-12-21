@@ -52,6 +52,7 @@ export default function MatchPage() {
   };
 
   const [data, setData] = useState([]);
+const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({
@@ -80,6 +81,7 @@ export default function MatchPage() {
     });
     if (response.ok) {
       console.log("epic");
+      setLoading(false);
       let jsondata = response.json().then(jsondata => {
         let loaded = [];
         for (let i = 0; i < jsondata.length; i++) {
@@ -87,7 +89,7 @@ export default function MatchPage() {
           loaded.push({
             request: {
               id: item.request.id,
-              time: item.request.dateTime,
+              time: item.request
             },
             success: item.isSuccess,
             winner: {
@@ -165,7 +167,8 @@ export default function MatchPage() {
       <main className={styles.main}>
         <h1>AVAILABLE MATCHES</h1>
         <div className={styles.req}>
-          {data
+        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
+          {data.sort((a, b) => a.request.time.localeCompare(b.request.time))
             .filter(
               req =>
                 req.winner.id === me.id ||

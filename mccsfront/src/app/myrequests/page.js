@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect, useState } from "react";
 import RequestComp from "./requestcomp";
 import EpicForm from "./epicform";
@@ -82,6 +83,7 @@ export default function Homepage() {
   };
 
   const [data, setData] = useState([]);
+const [loading, setLoading] = useState(true);
 
   const [matchp, setmatchp] = useState([]);
 
@@ -109,6 +111,7 @@ export default function Homepage() {
       },
     });
     if (response.ok) {
+      setLoading(false);
       console.log("epic");
       let jsondata = response.json().then(jsondata => {
         let loaded = [];
@@ -256,6 +259,7 @@ export default function Homepage() {
       <main className={styles.main}>
         <h1>MY REQUESTS</h1>
         <div className={styles.req}>
+        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
           {data
             .filter(
               req =>

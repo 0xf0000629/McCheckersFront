@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect } from 'react';
 
 export default function EpicForm({ onClose, onSubmit, players }){

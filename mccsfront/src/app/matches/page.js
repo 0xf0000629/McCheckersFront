@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect, useState } from "react";
 import MatchComp from "./requestcomp";
 import EpicForm from "./epicform";
@@ -66,6 +67,7 @@ export default function MatchPage() {
   };
 
   const [data, setData] = useState([]);
+const [loading, setLoading] = useState(true);
   const [reroll, setReroll] = useState(0);
   const router = useRouter();
   const [me, setMe] = useState({
@@ -95,6 +97,7 @@ export default function MatchPage() {
       });
       if (response.ok) {
         console.log("epic");
+        setLoading(false);
         let jsondata = response.json().then(jsondata => {
           let loaded = [];
           for (let i = 0; i < jsondata.length; i++) {
@@ -170,7 +173,8 @@ export default function MatchPage() {
       <main className={styles.main}>
         <h1>AVAILABLE MATCHES</h1>
         <div className={styles.req}>
-          {data.slice((count - 1) * 20, count * 20).map((request, i) => (
+        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
+          {data.sort((a, b) => a.request.time.localeCompare(b.request.time)).slice((count - 1) * 20, count * 20).map((request, i) => (
             <MatchComp key={i} match={request} />
           ))}
         </div>

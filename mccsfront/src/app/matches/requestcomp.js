@@ -1,4 +1,5 @@
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useRouter } from "next/navigation";
 
 export default function MatchComp({ match }) {
@@ -19,14 +20,17 @@ export default function MatchComp({ match }) {
                 <h3>Remark: {match.remark}</h3>
             </div>
             <div key={"player"+id} className={styles.reqin}>
+                <h3>WON</h3>
                 <div onClick={() => {router.push("/profile/" + match.winner.id);}} key={"player"+id+"_"+match.winner.id}>
                     {match.winner.firstname} {match.winner.secondname}, ELO: {match.winner.elo}
                     <br/>
                 </div>
+                <h3>LOST</h3>
                 <div onClick={() => {router.push("/profile/" + match.loser.id);}} key={"player"+id+"_"+match.loser.id}>
                     {match.loser.firstname} {match.loser.secondname}, ELO: {match.loser.elo}
                     <br/>
                 </div>
+                <h2>Score: {match.winnerscore + " : " + match.loserscore}</h2>
             </div>
         </div>
     );

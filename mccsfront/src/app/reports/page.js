@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "../page.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect, useState } from "react";
 import RequestComp from "./requestcomp";
 import EpicForm from "./epicform";
@@ -58,7 +59,8 @@ export default function Homepage() {
     setForm(false);
   };
 
-  const [data, setData] = useState(basedata);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({
@@ -88,6 +90,7 @@ export default function Homepage() {
       },
     });
     if (response.ok) {
+      setLoading(false);
       console.log("epic");
       let jsondata = response.json().then(jsondata => {
         let loaded = [];
@@ -155,6 +158,7 @@ export default function Homepage() {
           <h1>REPORTS</h1>
           {auth == false ? <h3>not authenticated</h3> : <></>}
           <div className={styles.req}>
+          <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
             {data.slice((count - 1) * 20, count * 20).map(request => (
               <button
                 key={request.userid + "_" + request.modid}
