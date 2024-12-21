@@ -61,7 +61,6 @@ export default function Profile() {
     
     fetchMe();
     fetchUser();
-    fetchAdmin();
   }, [token]);
 
   const fetchUser = async () => {
@@ -91,24 +90,6 @@ export default function Profile() {
       }
     }
     catch (e) {router.push("/profile");}
-  };
-  const fetchAdmin = async () => {
-    const adminreq = await fetch(process.env.API + "/admin", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (adminreq.ok) {
-      setAdmin(1);
-    } else console.log("not an admin...");
-  };
-  const fetchMe = async () => {
-    if (localStorage.getItem("me") != undefined) {
-      let loadme = JSON.parse(localStorage.getItem("me"));
-      setMe(loadme);
-    }
   };
 
   async function activeSwitch(id) {
@@ -169,36 +150,6 @@ export default function Profile() {
         console.log("user unpromoted");
         data.ismod = false;
         setMod(false);
-      }
-    }
-  }
-
-  async function banswitch(id) {
-    if (data.active == false) {
-      const response = await fetch(process.env.ADMIN + "/activate/" + id, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        console.log("user unbanned");
-        data.active = true;
-        setActive(true);
-      }
-    } else {
-      const response = await fetch(process.env.ADMIN + "/deactivate/" + id, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        console.log("user banned");
-        data.active = false;
-        setActive(false);
       }
     }
   }
@@ -281,17 +232,7 @@ export default function Profile() {
         ) : (
           <></>
         )}
-        {adminrights == 1 ? (
-          <button
-            className={styles.normalbutton}
-            onClick={() => banswitch(data.id)}
-          >
-            BAN
-          </button>
-        ) : (
-          <></>
-        )}
-        {adminrights == 1 ? (
+        {me.isadmin == 1 ? (
           <button
             className={styles.normalbutton}
             onClick={() => promoteswitch(data.id)}
@@ -301,14 +242,14 @@ export default function Profile() {
         ) : (
           <></>
         )}
-        {adminrights == 1 ? (
+        {me.isadmin == 1 ? (
           <button className={styles.normalbutton} onClick={() => formOpen()}>
             BLOCK
           </button>
         ) : (
           <></>
         )}
-        {adminrights == 1 ? (
+        {me.isadmin == 1 ? (
           <button
             className={styles.normalbutton}
             onClick={() => activeSwitch(data.id)}
