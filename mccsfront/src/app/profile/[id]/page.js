@@ -101,6 +101,7 @@ export default function ProfileU() {
             rank: player.rank,
             active: player.active,
             ismod: player.moderator,
+            avatar: player.avatarLink
           });
           setMod(player.moderator);
           setActive(player.active);
@@ -255,7 +256,7 @@ export default function ProfileU() {
           <div className={styles.profcard}>
             <div className={styles.reqin}>
               <Image
-                src="/defaultpfp.png"
+                src={data.avatar != undefined ? data.avatar : "/defaultpfp.png"}
                 alt="Profile picture"
                 width={200}
                 height={200}

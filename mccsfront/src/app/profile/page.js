@@ -54,6 +54,7 @@ export default function Profile() {
           elo: player.elo,
           rank: player.rank,
           active: player.active,
+          avatar: player.avatarLink
         });
       });
     }
@@ -87,7 +88,7 @@ export default function Profile() {
           <div className={styles.profcard}>
             <div className={styles.reqin}>
               <Image
-                src="/defaultpfp.png"
+                src={data.avatar != undefined ? data.avatar : "/defaultpfp.png"}
                 alt="Profile picture"
                 width={200}
                 height={200}
