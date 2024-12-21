@@ -8,6 +8,24 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
 
+  const [options, setOptions] = useState([ 
+    'United States',
+'Canada',
+'Mexico',
+'United Kingdom',
+'Germany',
+'France',
+'Italy',
+'Spain',
+'India',
+'China',
+'Japan',
+'Australia',
+'Brazil',
+'South Africa',
+'Russia'
+]);
+
   const [token, setToken] = useState(undefined);
 
   const [login, setlogin] = useState("");
@@ -211,11 +229,11 @@ export default function Home() {
               />
               <br />
               <select value={thectr} onChange={handleCTR}>
-                <option value="" disabled>
-                  {" "}
-                  select...{" "}
-                </option>
-                <option value="0">Russia</option>
+                {options.map((option, id) => (
+                  <option key={option} value={id+1}>
+                    {option}
+                  </option>
+                ))}
               </select>
               <br />
               <input className={styles.inputbig} 
