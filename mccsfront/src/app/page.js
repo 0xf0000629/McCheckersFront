@@ -141,7 +141,7 @@ export default function Home() {
     if (me.placeholder == undefined) {
       router.push("/requests");
     }
-  }, [me, token]);
+  }, [me]);
 
   return (
     <div className={styles.page}>
