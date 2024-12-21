@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ProfilePanel from "@/app/profilepanel";
 import EpicForm from "./epicform.js";
+import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
 /* let data = {
   id: 0,
@@ -24,16 +25,7 @@ export default function Profile() {
   const [token, setToken] = useState(undefined);
   const [ismod, setMod] = useState(false);
   const [active, setActive] = useState(false);
-  const [data, setData] = useState({
-    id: 0,
-    firstname: "Place",
-    secondname: "Holder",
-    phone: "+79009009090",
-    elo: 3333,
-    rank: "GOAT",
-    active: true,
-    ismod: false,
-  });
+  const [data, setData] = useState(undefined);
 
   const [formActive, setForm] = useState(false);
   const [adminrights, setAdmin] = useState(0);
@@ -257,26 +249,28 @@ export default function Profile() {
         <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
-        <div className={styles.profcard}>
-          <div className={styles.reqin}>
-            <Image
-              src="/defaultpfp.png"
-              alt="Profile picture"
-              width={200}
-              height={200}
-            />
-          </div>
-          <div className={styles.reqin}>
-            <h3>user id {data.id}</h3>
-            <h2>
-              NAME: {data.firstname} {data.secondname}
-            </h2>
-            <h2>PHONE: {data.phone}</h2>
-            <h2>
-              ELO: {data.elo}, {data.rank}
-            </h2>
-          </div>
+        {data == undefined ? <></> :
+          <div className={styles.profcard}>
+            <div className={styles.reqin}>
+              <Image
+                src="/defaultpfp.png"
+                alt="Profile picture"
+                width={200}
+                height={200}
+              />
+            </div>
+            <div className={styles.reqin}>
+              <h3>user id {data.id}</h3>
+              <h2>
+                NAME: {data.firstname} {data.secondname}
+              </h2>
+              <h2>PHONE: {data.phone}</h2>
+              <h2>
+                ELO: {data.elo}, {data.rank}
+              </h2>
+            </div>
         </div>
+        }
       </main>
       <footer className={styles.footer}>
         {me.ismod == 1 ? (
