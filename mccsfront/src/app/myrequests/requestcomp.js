@@ -25,7 +25,7 @@ export default function RequestComp({ id, place, time, mod, players, joinbutton,
                 ))}
             </div>
             {joinbutton && (<button className={styles.normalbutton} onClick={joinbutton}>LEAVE</button>)}
-            {modbutton && (<button className={styles.normalbutton} onClick={modbutton}>REPORT</button>)}
+            {modbutton && (<button className={styles.normalbutton} onClick={modbutton}>MATCH REPORT</button>)}
         </div>
     );
   }

@@ -63,7 +63,7 @@ export default function Home() {
           secondname: jsondata.surname,
           elo: jsondata.elo,
           active: jsondata.active,
-          ismod: jsondata.isModerator,
+          ismod: jsondata.moderator,
           isadmin: adminstate,
         };
         localStorage.setItem("me", JSON.stringify(newme));
