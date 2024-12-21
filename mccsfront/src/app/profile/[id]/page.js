@@ -65,29 +65,32 @@ export default function Profile() {
   }, [token]);
 
   const fetchUser = async () => {
-    const response = await fetch(process.env.USER + "/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.ok) {
-      let info = response.json().then(player => {
-        setData({
-          id: player.id,
-          firstname: player.name,
-          secondname: player.surname,
-          phone: player.phoneNumber,
-          elo: player.elo,
-          rank: player.rank,
-          active: player.active,
-          ismod: player.isModerator,
-        });
-        setMod(player.isModerator);
-        setActive(player.active);
+    try {
+      const response = await fetch(process.env.USER + "/" + id, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
+      if (response.ok) {
+        let info = response.json().then(player => {
+          setData({
+            id: player.id,
+            firstname: player.name,
+            secondname: player.surname,
+            phone: player.phoneNumber,
+            elo: player.elo,
+            rank: player.rank,
+            active: player.active,
+            ismod: player.isModerator,
+          });
+          setMod(player.isModerator);
+          setActive(player.active);
+        });
+      }
     }
+    catch (e) {router.push("/profile");}
   };
   const fetchAdmin = async () => {
     const adminreq = await fetch(process.env.API + "/admin", {
