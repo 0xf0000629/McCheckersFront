@@ -96,7 +96,6 @@ export default function Home() {
     if (response.ok) {
       const { token } = await response.json();
       localStorage.setItem("authToken", token);
-      fetchMe(token);
     } else {
       console.log(response);
     }
@@ -119,7 +118,6 @@ export default function Home() {
     if (response.ok) {
       const { token } = await response.json();
       localStorage.setItem("authToken", token);
-      fetchMe(token);
     } else {
       console.log(response);
     }
