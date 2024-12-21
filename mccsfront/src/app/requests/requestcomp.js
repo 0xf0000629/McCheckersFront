@@ -38,7 +38,7 @@ export default function RequestComp({
       </div>
       <div key={"player" + id} className={styles.reqin}>
         <h2>Players: </h2>
-        {players.map(((player, i)) => (
+        {players.map((player, i) => (
           <div
             onClick={() => {
               router.push("/profile/" + player.id);
