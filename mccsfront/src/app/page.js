@@ -129,19 +129,15 @@ export default function Home() {
 
   useEffect(() => {
     if (token != undefined && token != null){
-      fetchAdmin(token);
       if (adminstate != undefined && adminstate != null) {
-        fetchMe(token);
+        if (me.placeholder == undefined) {
+          router.push("/requests");
+        }
+        else fetchMe(token);
       }
+      else fetchAdmin(token);
     }
-  }, [adminstate, token]);
-
-  useEffect(() => {
-    fetchMe(token);
-    if (me.placeholder == undefined) {
-      router.push("/requests");
-    }
-  }, [me]);
+  }, [me, adminstate, token]);
 
   return (
     <div className={styles.page}>
