@@ -69,7 +69,8 @@ export default function Homepage() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false, isadmin: false,
+    ismod: false, 
+    isadmin: false,
   });
 
   const increment = () => {
@@ -81,7 +82,7 @@ export default function Homepage() {
 
   const adminrights = 0;
 
-  const fetchReqs = async (token) => {
+  const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
