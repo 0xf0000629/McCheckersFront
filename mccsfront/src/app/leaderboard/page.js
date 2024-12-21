@@ -24,7 +24,7 @@ let basedata = [
   },
 ];
 
-export default function Profile() {
+export default function Leaderboard() {
   const [token, setToken] = useState(undefined);
 
   const router = useRouter();

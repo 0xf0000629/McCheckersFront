@@ -43,7 +43,7 @@ let basedata = [
     ]
   });
 }*/
-export default function Homepage() {
+export default function Reports() {
   const [token, setToken] = useState(undefined);
 
   const [count, setCount] = useState(1);
@@ -83,7 +83,7 @@ export default function Homepage() {
   const adminrights = 0;
 
   const fetchReqs = async () => {
-    const response = await fetch(process.env.REQUEST, {
+    const response = await fetch(process.env.REPORT, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -37,7 +37,7 @@ let basedata = [
     moderator_elo: 2300,
   },
 ];
-export default function MatchPage() {
+export default function Matches() {
   const [token, setToken] = useState(undefined);
   const [count, setCount] = useState(1);
   const [modpriv, setmodpriv] = useState(0);

@@ -20,7 +20,7 @@ import ReportForm from "./reportform.js";
   ismod: false, isadmin: false,
 }; */
 
-export default function Profile() {
+export default function ProfileU() {
   const params = useParams();
   const id = params.id;
   const [token, setToken] = useState(undefined);
