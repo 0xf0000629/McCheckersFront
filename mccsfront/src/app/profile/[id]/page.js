@@ -52,10 +52,10 @@ export default function Profile() {
   };
 
   const form2Open = () => {
-    setForm(true);
+    set2Form(true);
   };
   const form2Close = () => {
-    setForm(false);
+    set2Form(false);
   };
 
   useEffect(() => {
