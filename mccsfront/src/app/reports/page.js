@@ -160,7 +160,6 @@ export default function Reports() {
         </header>
         <main className={styles.main}>
           <h1>REPORTS</h1>
-          <h3>{me.isadmin}</h3>
           <div className={styles.req}>
           <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
             {data.slice((count - 1) * 20, count * 20).map(request => (
@@ -171,7 +170,7 @@ export default function Reports() {
               >
                 <div className={styles.leader}>
                   <h2> UserID: {request.userid} </h2>
-                  <h2> Reported by: {request.modid} </h2>
+                  <h2> ReporterModID: {request.modid} </h2>
                 </div>
                 <div className={styles.leader}>
                   <h2> Reason: {request.reason} </h2>
