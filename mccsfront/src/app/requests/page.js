@@ -222,7 +222,7 @@ export default function Homepage() {
               Authorization: `Bearer ${token}`,
             },
           });
-          if (response.ok) alert("cool");
+          if (response.ok) console.log("joined request");
           else console.log(response);
         } else alert("this request is full!");
       } else {
@@ -234,7 +234,7 @@ export default function Homepage() {
               Authorization: `Bearer ${token}`,
             },
           });
-          if (response.ok) alert("cool");
+          if (response.ok) console.log("joined request");
           else console.log(response);
         } else alert("this request already has a moderator in charge!");
       }
@@ -253,7 +253,7 @@ export default function Homepage() {
           },
         });
         if (response.ok) {
-          alert("cool");
+          console.log("left request");
           fetchReqs();
         } else console.log(response);
       } else {
@@ -265,7 +265,7 @@ export default function Homepage() {
           },
         });
         if (response.ok) {
-          alert("cool");
+          console.log("left request");
           fetchReqs();
         } else console.log(response);
       }
@@ -319,12 +319,18 @@ export default function Homepage() {
               }}
               players={request.players}
               key={request.id}
-              joinbutton={request.players[0]?.id === me.id ||
+              joinbutton={
+                request.players[0]?.id === me.id ||
                 request.players[1]?.id === me.id ||
-                request?.moderator_id === me.id ? () => leave(request.id, modpriv) : () => tryjoin(request.id, modpriv)}
-              in={request.players[0]?.id === me.id ||
+                request?.moderator_id === me.id
+                  ? () => leave(request.id, modpriv)
+                  : () => tryjoin(request.id, modpriv)
+              }
+              in={
+                request.players[0]?.id === me.id ||
                 request.players[1]?.id === me.id ||
-                request?.moderator_id === me.id}
+                request?.moderator_id === me.id
+              }
             />
           ))}
         </div>

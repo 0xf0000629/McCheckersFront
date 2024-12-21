@@ -37,7 +37,8 @@ export default function Profile() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false, isadmin: false,
+    ismod: false,
+    isadmin: false,
   });
 
   const formOpen = () => {
@@ -58,7 +59,7 @@ export default function Profile() {
   useEffect(() => {
     if (!token) return;
     // Function to fetch data
-    
+
     fetchMe();
     fetchUser();
   }, [token]);
@@ -89,14 +90,15 @@ export default function Profile() {
             elo: player.elo,
             rank: player.rank,
             active: player.active,
-            ismod: player.isModerator,
+            ismod: player.moderator,
           });
-          setMod(player.isModerator);
+          setMod(player.moderator);
           setActive(player.active);
         });
       }
+    } catch (e) {
+      router.push("/profile");
     }
-    catch (e) {router.push("/profile");}
   };
 
   async function activeSwitch(id) {
@@ -133,6 +135,7 @@ export default function Profile() {
 
   async function promoteswitch(id) {
     if (data.ismod == false) {
+      console.log(data);
       const response = await fetch(process.env.ADMIN + "/moderator/" + id, {
         method: "POST",
         headers: {
@@ -146,6 +149,7 @@ export default function Profile() {
         setMod(true);
       }
     } else {
+      console.log(data);
       const response = await fetch(process.env.ADMIN + "/moderator/" + id, {
         method: "DELETE",
         headers: {
@@ -175,7 +179,7 @@ export default function Profile() {
       },
       body: JSON.stringify({
         userId: Number(id),
-        enddate: reqdata.time,
+        endDate: reqdata.time,
         cause: reqdata.cause,
       }),
     });
@@ -210,7 +214,9 @@ export default function Profile() {
         <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
-        {data == undefined ? <></> :
+        {data == undefined ? (
+          <></>
+        ) : (
           <div className={styles.profcard}>
             <div className={styles.reqin}>
               <Image
@@ -230,8 +236,8 @@ export default function Profile() {
                 ELO: {data.elo}, {data.rank}
               </h2>
             </div>
-        </div>
-        }
+          </div>
+        )}
       </main>
       <footer className={styles.footer}>
         {me.ismod == 1 ? (
@@ -244,7 +250,7 @@ export default function Profile() {
             className={styles.normalbutton}
             onClick={() => promoteswitch(data.id)}
           >
-            {active ? "DEMOTE" : "PROMOTE"}
+            {ismod ? "DEMOTE" : "PROMOTE"}
           </button>
         ) : (
           <></>
