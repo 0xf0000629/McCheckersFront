@@ -60,7 +60,7 @@ export default function MatchPage() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false,
+    ismod: false, isadmin: false,
   });
 
   const increment = () => {

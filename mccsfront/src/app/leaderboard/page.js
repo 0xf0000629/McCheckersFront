@@ -37,7 +37,7 @@ export default function Profile() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false,
+    ismod: false, isadmin: false,
   });
 
   const handleSearch = e => {

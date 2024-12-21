@@ -17,6 +17,8 @@ export default function Home() {
     placeholder: true,
   });
 
+  const [adminstate, setAdmin] = useState(undefined);
+
   const [thesurname, setsurname] = useState("");
   const [thename, setname] = useState("");
   const [thephone, setphone] = useState("");
@@ -62,12 +64,26 @@ export default function Home() {
           elo: jsondata.elo,
           active: jsondata.active,
           ismod: jsondata.isModerator,
+          isadmin: adminstate,
         };
         localStorage.setItem("me", JSON.stringify(newme));
         setMe(newme);
       });
     } else console.log(response);
   }
+
+  const fetchAdmin = async () => {
+    const adminreq = await fetch(process.env.API + "/admin", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (adminreq.ok) {
+      setAdmin(1);
+    } else setAdmin(0);
+  };
 
   const logEmIn = async e => {
     e.preventDefault();
@@ -112,6 +128,13 @@ export default function Home() {
   useEffect(() => {
     setToken(localStorage.getItem("authToken"));
   }, []);
+
+  useEffect(() => {
+    fetchAdmin(token);
+    if (adminstate != undefined) {
+      fetchMe(token);
+    }
+  }, [adminstate, token]);
 
   useEffect(() => {
     fetchMe(token);
