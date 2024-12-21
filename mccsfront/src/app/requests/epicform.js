@@ -7,7 +7,7 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
   const [options1, setOptions1] = useState([ 
       'Abbey Road st. 22',
       'Bourbon st. 43',
-      'Novocheckerskaya st. 144',
+      'Novocheckerskaya st. 1244',
       'Broadway st. 47',
       'Oxford st. 525A',
       'Wale  st. 6',
