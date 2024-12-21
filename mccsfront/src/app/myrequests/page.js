@@ -279,7 +279,7 @@ export default function Homepage() {
                 key={request.id}
                 joinbutton={() => leave(request.id, modpriv)}
                 modbutton={
-                  me.ismod == true && request.players.length == 2
+                  me.ismod == true
                     ? () => formOpen(request.id, request.players)
                     : undefined
                 }
