@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import styles from "../page.module.css";
@@ -11,10 +11,10 @@ import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
 
 let basedata = [
   {
-    "userid": 37,
-    "modid": 2,
-    "reason": "annoying"
-  }
+    userid: 37,
+    modid: 2,
+    reason: "annoying",
+  },
 ];
 /*for (let i=2;i<=50;i++){
   basedata.push({
@@ -51,65 +51,76 @@ export default function Homepage() {
 
   const [formActive, setForm] = useState(false);
 
-  const formOpen = () => {setForm(true);};
-  const formClose = () => {setForm(false);};
+  const formOpen = () => {
+    setForm(true);
+  };
+  const formClose = () => {
+    setForm(false);
+  };
 
   const [data, setData] = useState(basedata);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({
-    "id": -1,
-    "firstname": "Guest",
-    "secondname": "hawk",
-    "elo": 2300,
-    "active": true,
-    "ismod": false
+    id: -1,
+    firstname: "Guest",
+    secondname: "hawk",
+    elo: 2300,
+    active: true,
+    ismod: false,
   });
-  
 
-  const increment = () => {if (count < (Math.floor(data.length/20)+1))setCount(count + 1);}
-  const decrement = () => {if (count > 1) setCount(count - 1);}
+  const increment = () => {
+    if (count < Math.floor(data.length / 20) + 1) setCount(count + 1);
+  };
+  const decrement = () => {
+    if (count > 1) setCount(count - 1);
+  };
 
   const adminrights = 0;
 
   const fetchReqs = async () => {
     const response = await fetch(process.env.REQUEST, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       console.log("epic");
       let jsondata = response.json().then(jsondata => {
         let loaded = [];
-        for (let i=0;i<jsondata.length;i++){
+        for (let i = 0; i < jsondata.length; i++) {
           let item = jsondata[i];
           loaded.push({
-            "modid": item.moderatorId,
-            "userid": item.userId,
-            "reason": item.reason,
+            modid: item.moderatorId,
+            userid: item.userId,
+            reason: item.reason,
           });
         }
         setData(loaded);
       });
-    }
-    else console.log(response);
-  }
+    } else console.log(response);
+  };
   const fetchMe = async () => {
-    if (localStorage.getItem("me") != undefined){
-      let loadme = localStorage.getItem("me");
+    if (localStorage.getItem("me") != undefined) {
+      let loadme = JSON.parse(localStorage.getItem("me"));
       setMe(me);
     }
-  }
+  };
   const fetchAdmin = async () => {
-    const adminreq = await fetch(process.env.API+'/admin', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
+    const adminreq = await fetch(process.env.API + "/admin", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
-    if (adminreq.ok){
+    if (adminreq.ok) {
       adminrights = 1;
-    }
-    else console.log("not an admin...");
-  }
+    } else console.log("not an admin...");
+  };
 
   console.log("redraw");
   useEffect(() => {
@@ -124,28 +135,49 @@ export default function Homepage() {
     fetchAdmin();
   }, []);
 
-  const sendtoprofile = (id) => {
-    router.push('/profile/'+id);
-  }
+  const sendtoprofile = id => {
+    router.push("/profile/" + id);
+  };
   if (adminrights == 0)
-  return (
-    <div className={styles.page}><h1>you are not an admin</h1></div>);
+    return (
+      <div className={styles.page}>
+        <h1>you are not an admin</h1>
+      </div>
+    );
   else
-  return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-          <button className={styles.maxbutton} onClick={() => router.push("/requests")}>REQUESTS</button>
-          <button className={styles.maxbutton} onClick={() => router.push("/matches")}>MATCHES</button>
-          <button className={styles.maxbutton} onClick={() => router.push("/leaderboard")}>LEADERBOARDS</button>
-          <ProfilePanel name={me.firstname}  token={token}/>
-      </header>
-      <main className={styles.main}>
-        <h1>REPORTS</h1>
-        {auth == false ? (<h3>not authenticated</h3>) : <></>}
-        <div className={styles.req}>
-          {
-          data.slice((count-1)*20, (count)*20).map((request) => (
-            <button key={request.userid+"_"+request.modid} className={styles.leadercard} onClick={() => sendtoprofile(request.userid)}>
+    return (
+      <div className={styles.page}>
+        <header className={styles.header}>
+          <button
+            className={styles.maxbutton}
+            onClick={() => router.push("/requests")}
+          >
+            REQUESTS
+          </button>
+          <button
+            className={styles.maxbutton}
+            onClick={() => router.push("/matches")}
+          >
+            MATCHES
+          </button>
+          <button
+            className={styles.maxbutton}
+            onClick={() => router.push("/leaderboard")}
+          >
+            LEADERBOARDS
+          </button>
+          <ProfilePanel name={me.firstname} token={token} />
+        </header>
+        <main className={styles.main}>
+          <h1>REPORTS</h1>
+          {auth == false ? <h3>not authenticated</h3> : <></>}
+          <div className={styles.req}>
+            {data.slice((count - 1) * 20, count * 20).map(request => (
+              <button
+                key={request.userid + "_" + request.modid}
+                className={styles.leadercard}
+                onClick={() => sendtoprofile(request.userid)}
+              >
                 <div className={styles.leader}>
                   <h2> UserID: {request.userid} </h2>
                   <h2> Reported by: {request.modid} </h2>
@@ -153,12 +185,11 @@ export default function Homepage() {
                 <div className={styles.leader}>
                   <h2> Reason: {request.reason} </h2>
                 </div>
-            </button>
-          ))
-          }
-        </div>
-      </main>
-      <footer className={styles.footer}>
+              </button>
+            ))}
+          </div>
+        </main>
+        <footer className={styles.footer}>
           <button className={styles.roundbutton} onClick={decrement}>
             -
           </button>
@@ -166,7 +197,7 @@ export default function Homepage() {
           <button className={styles.roundbutton} onClick={increment}>
             +
           </button>
-      </footer>
-    </div>
-  );
+        </footer>
+      </div>
+    );
 }

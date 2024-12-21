@@ -87,15 +87,20 @@ export default function Homepage() {
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
-    setToken(authToken);
-    if (!authToken) {
+    if (authToken) {
+      setToken(authToken); // Triggers the useEffect below
+    } else {
       router.push("/");
     }
-    // Function to fetch data
-    fetchBuildings();
-    fetchReqs();
-    fetchMe();
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      fetchBuildings();
+      fetchReqs(token);
+      fetchMe(token);
+    }
+  }, [token]);
 
   const formOpen = () => {
     setForm(true);
@@ -137,7 +142,7 @@ export default function Homepage() {
       });
     } else console.log(response);
   };
-  const fetchReqs = async () => {
+  const fetchReqs = async token => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -177,12 +182,10 @@ export default function Homepage() {
   };
   const fetchMe = async () => {
     if (localStorage.getItem("me") != undefined) {
-      let loadme = localStorage.getItem("me");
-      setMe(me);
+      let loadme = JSON.parse(localStorage.getItem("me"));
+      setMe(loadme);
     }
   };
-
-  console.log("redraw");
 
   const create_req = async e => {
     e.preventDefault();

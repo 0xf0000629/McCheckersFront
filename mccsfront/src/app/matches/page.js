@@ -49,7 +49,7 @@ export default function MatchPage() {
     if (!authToken) {
       router.push("/");
     }
-    fetchReqs();
+    fetchReqs(authToken);
     fetchMe();
     setReroll(reroll + 1);
   }, []);
@@ -80,9 +80,9 @@ export default function MatchPage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async () => {
+  const fetchReqs = async token => {
     try {
-      const response = await fetch(process.env.REQUEST, {
+      const response = await fetch(process.env.MATCH, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -128,8 +128,9 @@ export default function MatchPage() {
   };
   const fetchMe = async () => {
     if (localStorage.getItem("me") != undefined) {
-      let loadme = localStorage.getItem("me");
-      setMe(me);
+      let loadme = JSON.parse(localStorage.getItem("me"));
+
+      setMe(loadme);
     }
   };
 

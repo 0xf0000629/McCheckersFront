@@ -13,7 +13,9 @@ export default function Home() {
   const [login, setlogin] = useState("");
   const [password, setpassword] = useState("");
 
-  const [me, setMe] = useState();
+  const [me, setMe] = useState({
+    placeholder: true,
+  });
 
   const [thesurname, setsurname] = useState("");
   const [thename, setname] = useState("");
@@ -52,17 +54,18 @@ export default function Home() {
     });
     if (response.ok) {
       console.log("got you");
-      let jsondata = response.json().then(jsondata =>
-        setMe({
+      let jsondata = response.json().then(jsondata => {
+        const newme = {
           id: jsondata.id,
           firstname: jsondata.name,
           secondname: jsondata.surname,
           elo: jsondata.elo,
           active: jsondata.active,
           ismod: jsondata.isModerator,
-        })
-      );
-      localStorage.setItem("me", me);
+        };
+        localStorage.setItem("me", JSON.stringify(newme));
+        setMe(newme);
+      });
     } else console.log(response);
   }
 
@@ -78,7 +81,6 @@ export default function Home() {
       const { token } = await response.json();
       localStorage.setItem("authToken", token);
       fetchMe(token);
-      router.push("/requests");
     } else {
       console.log(response);
     }
@@ -102,7 +104,6 @@ export default function Home() {
       const { token } = await response.json();
       localStorage.setItem("authToken", token);
       fetchMe(token);
-      router.push("/requests");
     } else {
       console.log(response);
     }
@@ -110,10 +111,13 @@ export default function Home() {
 
   useEffect(() => {
     setToken(localStorage.getItem("authToken"));
-    if (token || !(token == undefined)) {
+  }, []);
+
+  useEffect(() => {
+    if (me.placeholder == undefined) {
       router.push("/requests");
     }
-  }, []);
+  }, [me, token]);
 
   return (
     <div className={styles.page}>

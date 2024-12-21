@@ -7,53 +7,52 @@ import { useRouter } from "next/navigation";
 import ProfilePanel from "../profilepanel";
 
 let basedata = [
-    {
-      "id": 36,
-      "firstname": "mike",
-      "secondname": "hawk",
-      "elo": 2300,
-      "rank": "GOAT",
-      "matches": 120
-    },
-    {
-      "id": 49,
-      "firstname": "may",
-      "secondname": "coxlon",
-      "elo": 2300,
-      "rank": "GOAT",
-      "matches": 120
-    }
-  ];
-  
-export default function Profile() {
+  {
+    id: 36,
+    username: "mike",
+    elo: 2300,
+    rank: "GOAT",
+    matches: 120,
+  },
+  {
+    id: 49,
+    username: "may",
+    elo: 2300,
+    rank: "GOAT",
+    matches: 120,
+  },
+];
 
+export default function Profile() {
   const [token, setToken] = useState(undefined);
 
   const router = useRouter();
-  const [data, setData] = useState(basedata);
+  const [data, setData] = useState([]);
 
   const [searchbar, setSearch] = useState("");
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({
-    "id": -1,
-    "firstname": "Guest",
-    "secondname": "hawk",
-    "elo": 2300,
-    "active": true,
-    "ismod": false
+    id: -1,
+    firstname: "Guest",
+    secondname: "hawk",
+    elo: 2300,
+    active: true,
+    ismod: false,
   });
 
-  const handleSearch = (e) => {setSearch(e.target.value);};
+  const handleSearch = e => {
+    setSearch(e.target.value);
+  };
 
   const fetchMe = async () => {
-    if (localStorage.getItem("me") != undefined){
-      let loadme = localStorage.getItem("me");
+    if (localStorage.getItem("me") != undefined) {
+      let loadme = JSON.parse(localStorage.getItem("me"));
       setMe(me);
     }
-  }
+  };
 
   const fetchLead = async () => {
-    try{
+    try {
       const response = await fetch(process.env.LEADERBOARD, {
         method: "GET",
         headers: {
@@ -69,8 +68,7 @@ export default function Profile() {
             let item = jsondata[i];
             loaded.push({
               id: item.id,
-              firstname: item.name,
-              secondname: item.surname,
+              username: item.username,
               elo: item.elo,
               rank: item.rank,
               matches: item.totalMatches,
@@ -79,11 +77,10 @@ export default function Profile() {
           setData(loaded);
         });
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -91,11 +88,14 @@ export default function Profile() {
     if (!authToken) {
       router.push("/");
     }
-    // Function to fetch data
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
     fetchLead();
     fetchMe();
-    setReroll(reroll+1);
-  }, []);
+    setReroll(reroll + 1);
+  }, [token]);
 
   const sendtoprofile = id => {
     router.push("/profile/" + id);
@@ -123,11 +123,10 @@ export default function Profile() {
         >
           LEADERBOARDS
         </button>
-        <ProfilePanel name={me.firstname}  token={token}/>
+        <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
         <h1>LEADERBOARDS</h1>
-        {auth == false ? <h3>not authenticated</h3> : <></>}
         <input
           type="text"
           placeholder="Search..."
@@ -137,9 +136,7 @@ export default function Profile() {
         />
         <div className={styles.reqin}>
           {data
-            .filter(item =>
-              (item.firstname + " " + item.secondname).startsWith(searchbar)
-            )
+            .filter(item => item.username.startsWith(searchbar))
             .slice(0, 100)
             .map(player => (
               <button
@@ -148,8 +145,7 @@ export default function Profile() {
                 onClick={() => sendtoprofile(player.id)}
               >
                 <div className={styles.leader}>
-                  <h2> {player.firstname} </h2>
-                  <h2> {player.secondname} </h2>
+                  <h2> {player.username} </h2>
                 </div>
                 <div className={styles.leader}>
                   <h2>
