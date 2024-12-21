@@ -66,7 +66,7 @@ export default function ProfilePanel(props) {
         >
           My profile
         </button>
-        {me.isadmin == 1 ? (
+        {me.isadmin == 0 ? (
         <button
           onClick={() => router.push("/myrequests")}
           className={styles.maxbutton}
@@ -76,7 +76,7 @@ export default function ProfilePanel(props) {
         ) : (
           <></>
         )}
-        {me.isadmin == 1 ? (
+        {me.isadmin == 0 ? (
         <button
           onClick={() => router.push("/mymatches")}
           className={styles.maxbutton}
