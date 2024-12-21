@@ -268,7 +268,7 @@ const [loading, setLoading] = useState(true);
                 req?.moderator_id === me.id
             )
             .slice((count - 1) * 20, count * 20)
-            .map(request, i => (
+            .map((request, i) => (
               <RequestComp
                 id={request.id}
                 place={{ room: request.room, building: request.building }}

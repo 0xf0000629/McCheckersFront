@@ -142,7 +142,7 @@ const [loading, setLoading] = useState(true);
           {data
             .filter(item => item.username.startsWith(searchbar))
             .slice(0, 100)
-            .map(player, i => (
+            .map((player, i) => (
               <button
                 key={"plaque" + i}
                 className={styles.leadercard}
