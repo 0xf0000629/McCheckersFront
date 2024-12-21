@@ -212,9 +212,9 @@ export default function Profile() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        UserId: data.id,
+        userId: data.id,
         moderatorId: me.id,
-        cause: reqdata.cause,
+        reason: reqdata.cause,
       }),
     });
 
