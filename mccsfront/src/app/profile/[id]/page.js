@@ -107,7 +107,7 @@ export default function Profile() {
   const fetchMe = async () => {
     if (localStorage.getItem("me") != undefined) {
       let loadme = JSON.parse(localStorage.getItem("me"));
-      setMe(me);
+      setMe(loadme);
     }
   };
 
