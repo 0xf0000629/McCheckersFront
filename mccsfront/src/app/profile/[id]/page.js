@@ -63,6 +63,13 @@ export default function Profile() {
     fetchUser();
   }, [token]);
 
+  const fetchMe = async () => {
+    if (localStorage.getItem("me") != undefined) {
+      let loadme = JSON.parse(localStorage.getItem("me"));
+      setMe(loadme);
+    }
+  };
+
   const fetchUser = async () => {
     try {
       const response = await fetch(process.env.USER + "/" + id, {
