@@ -175,7 +175,7 @@ export default function Homepage() {
       },
       body: JSON.stringify({
         requestId: reqfocus,
-        success: ((reqdata.succ).toString() === true),
+        success: ((reqdata.succ).toString() !== "false"),
         winnerId: matchp[reqdata.winner].id,
         loserId: matchp[1 - reqdata.winner].id,
         winnerScore: reqdata.score1,

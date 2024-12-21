@@ -87,6 +87,7 @@ export default function MatchPage() {
           loaded.push({
             request: {
               id: item.request.id,
+              time: item.request.dateTime,
             },
             success: item.isSuccess,
             winner: {
@@ -104,6 +105,7 @@ export default function MatchPage() {
             winnerscore: item.winnerScore,
             loserscore: item.loserScore,
             remark: item.remark,
+            friendlymatch: item.friendlyMatch,
             moderator_id: item.moderator?.id,
             moderator_firstname: item.moderator?.name,
             moderator_secondname: item.moderator?.surname,

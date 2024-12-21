@@ -13,7 +13,9 @@ export default function MatchComp({ match }) {
         <div className={styles.reqout}>
             <div key={"info"+id} className={styles.reqin}>
                 {match.success == true ? <h1>SUCCESSFUL</h1> : <h1>FAILED</h1>}
+                <h3>Time: {match.request.time}</h3>
                 <h3>Moderator: {match.moderator_firstname} {match.moderator_secondname}, ELO: {match.moderator_elo}</h3>
+                {match.friendlymatch ? <h3>friendly match</h3> : <></>}
                 <h3>Remark: {match.remark}</h3>
             </div>
             <div key={"player"+id} className={styles.reqin}>
