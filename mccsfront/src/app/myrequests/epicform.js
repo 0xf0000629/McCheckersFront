@@ -4,6 +4,16 @@ import { useEffect } from 'react';
 
 export default function EpicForm({ onClose, onSubmit, players }){
   console.log(players);
+  const [loser, loserSet] = useState(0);
+  const [winner, winnerSet] = useState(0);
+
+  const handleL = (event) => {
+    loserSet(event.target.checked);
+  };
+  const handleW = (event) => {
+    winnerSet(event.target.checked);
+  };
+  
   return (
     <div className={styles.overlay}>
       <div className={styles.popup}>
@@ -25,15 +35,15 @@ export default function EpicForm({ onClose, onSubmit, players }){
             </select>
           </div>
 
-          <select id="score1" name="score1" style={{ padding: '8px', marginRight: '10px' }}>
+          <select onChange={handleW} id="score1" name="score1" style={{ padding: '8px', marginRight: '10px' }}>
               <option value="0">0</option>
               <option value="1">1</option>
-              <option value="2">2</option>
+              {loser != 2 ? <option value="2">2</option> : <></>}
           </select>
-          <select id="score2" name="score2" style={{ padding: '8px', marginRight: '10px' }}>
+          <select onChange={handleL} id="score2" name="score2" style={{ padding: '8px', marginRight: '10px' }}>
               <option value="0">0</option>
               <option value="1">1</option>
-              <option value="2">2</option>
+              {winner != 2 ? <option value="2">2</option> : <></>}
           </select>
 
           <div className={styles.formGroup}>
