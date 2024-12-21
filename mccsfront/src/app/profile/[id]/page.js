@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import ProfilePanel from "@/app/profilepanel";
 import EpicForm from "./epicform.js";
 import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
+import ReportForm from "./reportform";
 
 /* let data = {
   id: 0,
@@ -28,6 +29,8 @@ export default function Profile() {
   const [data, setData] = useState(undefined);
 
   const [formActive, setForm] = useState(false);
+  const [form2Active, set2Form] = useState(false);
+
   const [adminrights, setAdmin] = useState(0);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
@@ -45,6 +48,13 @@ export default function Profile() {
     setForm(true);
   };
   const formClose = () => {
+    setForm(false);
+  };
+
+  const form2Open = () => {
+    setForm(true);
+  };
+  const form2Close = () => {
     setForm(false);
   };
 
@@ -189,10 +199,35 @@ export default function Profile() {
     } else console.log(response);
   };
 
+  const report = async e => {
+    e.preventDefault();
+    formClose();
+    const formData = new FormData(e.target);
+    const reqdata = Object.fromEntries(formData.entries());
+
+    const response = await fetch(process.env.REPORT + "/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        UserId: data.id,
+        moderatorId: me.id,
+        cause: reqdata.cause,
+      }),
+    });
+
+    if (response.ok) {
+      console.log("user blocked");
+    } else console.log(response);
+  };
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <EpicForm isOpen={formActive} onClose={formClose} onSubmit={blocke} />
+        <ReportForm isOpen={form2Active} onClose={form2Close} onSubmit={report} />
         <button
           className={styles.maxbutton}
           onClick={() => router.push("/requests")}
@@ -241,7 +276,7 @@ export default function Profile() {
       </main>
       <footer className={styles.footer}>
         {me.ismod == 1 ? (
-          <button className={styles.normalbutton}>REPORT</button>
+          <button className={styles.normalbutton} onClick={() => form2Open()}>REPORT</button>
         ) : (
           <></>
         )}
