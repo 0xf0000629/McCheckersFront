@@ -5,7 +5,6 @@ import styles from "../page.module.css";
 import ClipLoader from "react-spinners/ClipLoader";
 
 export default function EpicForm({ isOpen, onClose, onSubmit }){
-  if (!isOpen) return null; // Do not render if the pop-up is not open
   const [options1, setOptions1] = useState([ 
       'Abbey Road st. 22',
       'Bourbon st. 43',
@@ -34,6 +33,7 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
   const handleR = (event) => {
     roomSet(event.target.value);
   };
+  if (!isOpen) return null; // Do not render if the pop-up is not open
   return (
     <div className={styles.overlay}>
       <div className={styles.popup}>
