@@ -53,7 +53,7 @@ export default function MatchPage() {
 
   useEffect(() => {
     if (!token) return;
-    fetchReqs(authToken);
+    fetchReqs();
     fetchMe();
     setReroll(reroll + 1);
   }, [token]);
@@ -65,7 +65,7 @@ export default function MatchPage() {
     setForm(false);
   };
 
-  const [data, setData] = useState(basedata);
+  const [data, setData] = useState([]);
   const [reroll, setReroll] = useState(0);
   const router = useRouter();
   const [me, setMe] = useState({
@@ -84,7 +84,7 @@ export default function MatchPage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async token => {
+  const fetchReqs = async () => {
     try {
       const response = await fetch(process.env.MATCH, {
         method: "GET",

@@ -61,13 +61,7 @@ let basedata = [
   });
 }*/
 export default function Homepage() {
-  const token = window.localStorage.getItem("authToken");
-  let auth = true;
-  if (!token) {
-    auth = false;
-    //return;
-  }
-
+  const [token, setToken] = useState(undefined);
   const [count, setCount] = useState(1);
 
   const [modpriv, setmodpriv] = useState(0);
@@ -106,7 +100,7 @@ export default function Homepage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async (token) => {
+  const fetchReqs = async token => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -261,7 +255,6 @@ export default function Homepage() {
       </header>
       <main className={styles.main}>
         <h1>MY REQUESTS</h1>
-        {auth == false ? <h3>not authenticated</h3> : <></>}
         <div className={styles.req}>
           {data
             .filter(

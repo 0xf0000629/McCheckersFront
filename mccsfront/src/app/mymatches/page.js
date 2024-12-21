@@ -37,7 +37,7 @@ let basedata = [
   },
 ];
 export default function MatchPage() {
-
+  const [token, setToken] = useState(undefined);
   const [count, setCount] = useState(1);
 
   const [modpriv, setmodpriv] = useState(0);
@@ -70,7 +70,7 @@ export default function MatchPage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async (token) => {
+  const fetchReqs = async token => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
