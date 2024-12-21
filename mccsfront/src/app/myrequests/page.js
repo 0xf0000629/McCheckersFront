@@ -268,7 +268,7 @@ const [loading, setLoading] = useState(true);
                 req?.moderator_id === me.id
             )
             .slice((count - 1) * 20, count * 20)
-            .map(request => (
+            .map(request, i => (
               <RequestComp
                 id={request.id}
                 place={{ room: request.room, building: request.building }}
@@ -280,7 +280,7 @@ const [loading, setLoading] = useState(true);
                   elo: request.moderator_elo,
                 }}
                 players={request.players}
-                key={request.id}
+                key={i}
                 joinbutton={() => leave(request.id, modpriv)}
                 modbutton={
                   me.ismod == true

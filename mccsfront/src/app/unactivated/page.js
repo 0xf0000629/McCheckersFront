@@ -160,9 +160,9 @@ const [loading, setLoading] = useState(true);
           {data
             .filter(item => item.username.startsWith(searchbar))
             .slice(0, 100)
-            .map(player => (
+            .map(player, i => (
               <button
-                key={"player" + player.id}
+                key={"plaque" + i}
                 className={styles.leadercard}
                 onClick={() => sendtoprofile(player.id)}
               >

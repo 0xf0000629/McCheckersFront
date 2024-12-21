@@ -312,7 +312,7 @@ const [loading, setLoading] = useState(true);
         </button>
         <div className={styles.req}>
         <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
-          {data.slice((count - 1) * 20, count * 20).map(request => (
+          {data.slice((count - 1) * 20, count * 20).map(request, i => (
             <RequestComp
               id={request.id}
               place={{ room: request.room, building: request.building }}
@@ -324,7 +324,7 @@ const [loading, setLoading] = useState(true);
                 elo: request.moderator_elo,
               }}
               players={request.players}
-              key={request.id}
+              key={i}
               joinbutton={
                 request.players[0]?.id === me.id ||
                 request.players[1]?.id === me.id ||
