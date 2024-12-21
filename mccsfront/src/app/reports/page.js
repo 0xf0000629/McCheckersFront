@@ -115,6 +115,15 @@ export default function Reports() {
   };
 
   console.log("redraw");
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    setToken(authToken);
+    if (!authToken) {
+      router.push("/");
+    }
+  }, []);
+  
   useEffect(() => {
     if (!token) return;
     // Function to fetch data
