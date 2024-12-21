@@ -58,7 +58,7 @@ export default function Profile() {
   useEffect(() => {
     if (!token) return;
     // Function to fetch data
-    
+
     fetchMe();
     fetchUser();
     fetchAdmin();
@@ -89,8 +89,9 @@ export default function Profile() {
           setActive(player.active);
         });
       }
+    } catch (e) {
+      router.push("/profile");
     }
-    catch (e) {router.push("/profile");}
   };
   const fetchAdmin = async () => {
     const adminreq = await fetch(process.env.API + "/admin", {
@@ -217,7 +218,7 @@ export default function Profile() {
       },
       body: JSON.stringify({
         userId: Number(id),
-        enddate: reqdata.time,
+        endDate: reqdata.time,
         cause: reqdata.cause,
       }),
     });
@@ -252,7 +253,9 @@ export default function Profile() {
         <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
-        {data == undefined ? <></> :
+        {data == undefined ? (
+          <></>
+        ) : (
           <div className={styles.profcard}>
             <div className={styles.reqin}>
               <Image
@@ -272,8 +275,8 @@ export default function Profile() {
                 ELO: {data.elo}, {data.rank}
               </h2>
             </div>
-        </div>
-        }
+          </div>
+        )}
       </main>
       <footer className={styles.footer}>
         {me.ismod == 1 ? (
