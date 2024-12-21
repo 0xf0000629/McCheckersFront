@@ -102,6 +102,7 @@ export default function Home() {
         setToken(localStorage.getItem("authToken"));
       } else {
         console.log(response);
+        setBP(1);
       }
     }
     catch (e) {setBP(1);}
