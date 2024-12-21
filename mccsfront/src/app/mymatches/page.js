@@ -169,7 +169,7 @@ const [loading, setLoading] = useState(true);
         <h1>AVAILABLE MATCHES</h1>
         <div className={styles.req}>
         <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" className={styles.reqout}/>
-          {data.sort((a, b) => a.request.time.localeCompare(b.request.time))
+          {data
             .filter(
               req =>
                 req.winner.id === me.id ||

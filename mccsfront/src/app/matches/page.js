@@ -174,7 +174,7 @@ const [loading, setLoading] = useState(true);
         <h1>MOST RECENT MATCHES</h1>
         <div className={styles.req}>
         <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" className={styles.reqout}/>
-          {data.sort((a, b) => a.request.time.localeCompare(b.request.time)).slice((count - 1) * 20, count * 20).map((request, i) => (
+          {data.slice((count - 1) * 20, count * 20).map((request, i) => (
             <MatchComp key={i} match={request} />
           ))}
         </div>
