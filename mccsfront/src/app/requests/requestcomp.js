@@ -45,7 +45,7 @@ export default function RequestComp({
       </div>
       {joinbutton && (
         <button className={styles.normalbutton} onClick={joinbutton}>
-          {modbutton === true ? LEAVE : JOIN}
+          {modbutton === true ? "LEAVE" : "JOIN"}
         </button>
       )}
     </div>
