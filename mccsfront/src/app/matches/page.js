@@ -100,7 +100,9 @@ export default function MatchPage() {
           for (let i = 0; i < jsondata.length; i++) {
             let item = jsondata[i];
             loaded.push({
-              id: item.request.id,
+              request: {
+                id: item.request.id,
+              },
               success: item.isSuccess,
               winner: {
                 id: item.winner.id,

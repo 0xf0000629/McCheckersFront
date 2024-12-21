@@ -244,7 +244,7 @@ export default function Profile() {
             className={styles.normalbutton}
             onClick={() => promoteswitch(data.id)}
           >
-            PROMOTE
+            {active ? "DEMOTE" : "PROMOTE"}
           </button>
         ) : (
           <></>
