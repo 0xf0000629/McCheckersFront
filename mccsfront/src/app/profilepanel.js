@@ -101,7 +101,7 @@ export default function ProfilePanel(props) {
             onClick={() => router.push("/unactivated")}
             className={styles.maxbutton}
           >
-            Unactivated users
+            Unactivated
           </button>
         ) : (
           <></>
