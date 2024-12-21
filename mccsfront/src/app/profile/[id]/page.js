@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import ProfilePanel from "@/app/profilepanel";
 import EpicForm from "./epicform.js";
 import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
-import ReportForm from "./reportform";
+import ReportForm from "./reportform.js";
 
 /* let data = {
   id: 0,
@@ -201,7 +201,7 @@ export default function Profile() {
 
   const report = async e => {
     e.preventDefault();
-    formClose();
+    form2Close();
     const formData = new FormData(e.target);
     const reqdata = Object.fromEntries(formData.entries());
 
