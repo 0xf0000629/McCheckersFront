@@ -142,37 +142,6 @@ export default function MatchPage() {
 
   console.log("redraw");
 
-  async function tryjoin(id, modpriv) {
-    const index = data.findIndex(item => item.id === id);
-    if (index !== -1) {
-      if (modpriv == 0) {
-        if (data[index].players.length < 2) {
-          const response = await fetch(process.env.REQUEST + "/" + id, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.ok) alert("cool");
-          else console.log(response);
-        } else alert("this request is full!");
-      } else {
-        if (data[index].moderator_id == undefined) {
-          const response = await fetch(process.env.REQUEST + "/" + id, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.ok) alert("cool");
-          else console.log(response);
-        } else alert("this request already has a moderator in charge!");
-      }
-    } else alert("this request doesn't exist");
-  }
-
   return (
     <div className={styles.page}>
       <header className={styles.header}>
