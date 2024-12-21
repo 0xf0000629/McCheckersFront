@@ -67,7 +67,7 @@ export default function Homepage() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false,
+    ismod: false, isadmin: false,
   });
 
   const increment = () => {
@@ -109,18 +109,6 @@ export default function Homepage() {
       setMe(me);
     }
   };
-  const fetchAdmin = async () => {
-    const adminreq = await fetch(process.env.API + "/admin", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (adminreq.ok) {
-      adminrights = 1;
-    } else console.log("not an admin...");
-  };
 
   console.log("redraw");
   useEffect(() => {
@@ -128,13 +116,12 @@ export default function Homepage() {
     // Function to fetch data
     fetchReqs();
     fetchMe();
-    fetchAdmin();
   }, [token]);
 
   const sendtoprofile = id => {
     router.push("/profile/" + id);
   };
-  if (adminrights == 0)
+  if (me.isadmin == 0)
     return (
       <div className={styles.page}>
         <h1>you are not an admin</h1>

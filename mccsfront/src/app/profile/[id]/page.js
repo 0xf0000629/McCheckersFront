@@ -16,7 +16,7 @@ import { UNDERSCORE_NOT_FOUND_ROUTE } from "next/dist/shared/lib/constants";
   elo: 3333,
   rank: "GOAT",
   active: true,
-  ismod: false,
+  ismod: false, isadmin: false,
 }; */
 
 export default function Profile() {
@@ -37,7 +37,7 @@ export default function Profile() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false,
+    ismod: false, isadmin: false,
   });
 
   const formOpen = () => {

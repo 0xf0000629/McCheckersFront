@@ -8,6 +8,10 @@ export default function ProfilePanel(props) {
   const router = useRouter();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
+  const [me, setMe] = useState({
+    isadmin: 0,
+  });
+
   const [adminrights, setAdmin] = useState(0);
 
   const togglePanel = () => {
@@ -29,22 +33,17 @@ export default function ProfilePanel(props) {
     } else console.log(response);
   };
 
-  const fetchAdmin = async () => {
-    const adminreq = await fetch(process.env.API + "/admin", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (adminreq.ok) {
-      setAdmin(1);
-    } else console.log("not an admin...");
+  const fetchMe = async () => {
+    if (localStorage.getItem("me") != undefined) {
+      let loadme = JSON.parse(localStorage.getItem("me"));
+      setMe(loadme);
+    }
   };
 
   useEffect(() => {
-    fetchAdmin();
+    fetchMe();
   }, [token]);
+
 
   return (
     <div>
@@ -67,19 +66,27 @@ export default function ProfilePanel(props) {
         >
           My profile
         </button>
+        {me.isadmin == 1 ? (
         <button
           onClick={() => router.push("/myrequests")}
           className={styles.maxbutton}
         >
           My requests
         </button>
+        ) : (
+          <></>
+        )}
+        {me.isadmin == 1 ? (
         <button
           onClick={() => router.push("/mymatches")}
           className={styles.maxbutton}
         >
           My matches
         </button>
-        {adminrights == 1 ? (
+        ) : (
+          <></>
+        )}
+        {me.isadmin == 1 ? (
           <button
             onClick={() => router.push("/reports")}
             className={styles.maxbutton}

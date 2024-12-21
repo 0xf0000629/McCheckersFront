@@ -82,7 +82,7 @@ export default function Homepage() {
     secondname: "hawk",
     elo: 2300,
     active: true,
-    ismod: false,
+    ismod: false, isadmin: false,
   });
 
   useEffect(() => {
