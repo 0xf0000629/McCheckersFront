@@ -114,6 +114,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    fetchMe(token);
     if (me.placeholder == undefined) {
       router.push("/requests");
     }

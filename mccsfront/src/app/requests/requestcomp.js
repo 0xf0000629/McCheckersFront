@@ -8,7 +8,7 @@ export default function RequestComp({
   mod,
   players,
   joinbutton,
-  modbutton,
+  modbutton
 }) {
   const router = useRouter();
   function timeconv(time){
@@ -45,7 +45,7 @@ export default function RequestComp({
       </div>
       {joinbutton && (
         <button className={styles.normalbutton} onClick={joinbutton}>
-          JOIN
+          {modbutton === true ? LEAVE : JOIN}
         </button>
       )}
     </div>

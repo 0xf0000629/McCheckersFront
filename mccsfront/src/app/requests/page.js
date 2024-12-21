@@ -73,7 +73,7 @@ export default function Homepage() {
 
   const [formActive, setForm] = useState(false);
 
-  const [data, setData] = useState(basedata);
+  const [data, setData] = useState([]);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({
@@ -322,6 +322,9 @@ export default function Homepage() {
               joinbutton={request.players[0]?.id === me.id ||
                 request.players[1]?.id === me.id ||
                 request?.moderator_id === me.id ? () => leave(request.id, modpriv) : () => tryjoin(request.id, modpriv)}
+              in={request.players[0]?.id === me.id ||
+                request.players[1]?.id === me.id ||
+                request?.moderator_id === me.id}
             />
           ))}
         </div>
