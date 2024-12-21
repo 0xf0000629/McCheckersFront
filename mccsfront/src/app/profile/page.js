@@ -92,6 +92,7 @@ export default function Profile() {
                 alt="Profile picture"
                 width={200}
                 height={200}
+                unoptimized
               />
             </div>
             <div className={styles.reqin}>
