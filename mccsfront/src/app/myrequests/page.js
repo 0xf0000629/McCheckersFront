@@ -174,8 +174,8 @@ export default function Homepage() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        requestId: f,
-        isSuccess: reqdata.value,
+        requestId: reqfocus,
+        isSuccess: reqdata.succ,
         winnerId: matchp[reqdata.winner],
         loserId: matchp[1 - reqdata.winner],
         winnerScore: reqdata.score1,
