@@ -83,7 +83,7 @@ export default function Reports() {
   const adminrights = 0;
 
   const fetchReqs = async () => {
-    const response = await fetch(process.env.REPORT, {
+    const response = await fetch(process.env.REPORT + "/all", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export default function Reports() {
       router.push("/");
     }
   }, []);
-  
+
   useEffect(() => {
     if (!token) return;
     // Function to fetch data
