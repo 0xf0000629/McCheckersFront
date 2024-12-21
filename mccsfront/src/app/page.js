@@ -24,6 +24,8 @@ export default function Home() {
   const [thephone, setphone] = useState("");
   const [thectr, setcountry] = useState("");
 
+  const [badpass, setBP] = useState(0);
+
   const [activeForm, setActiveForm] = useState("login");
 
   const handleLog = e => {
@@ -88,18 +90,21 @@ export default function Home() {
   const logEmIn = async e => {
     e.preventDefault();
     //console.log(`"Login:": ${login}, "Password:": ${password}`);
-    const response = await fetch(process.env.AUTH + "/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: login, password: password }),
-    });
-    if (response.ok) {
-      const { token } = await response.json();
-      localStorage.setItem("authToken", token);
-      setToken(localStorage.getItem("authToken"));
-    } else {
-      console.log(response);
+    try {
+      const response = await fetch(process.env.AUTH + "/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: login, password: password }),
+      });
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem("authToken", token);
+        setToken(localStorage.getItem("authToken"));
+      } else {
+        console.log(response);
+      }
     }
+    catch (e) {setBP(1);}
   };
 
   const regEmIn = async e => {
@@ -143,9 +148,9 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.profcard}>
-          <h1>Login</h1>
+      <main className={styles.loginmain}>
+        <div className={styles.logina}>
+          {activeForm === "login" ? <h1>Login</h1> : <h1>Register</h1>}
 
           {/* Buttons to Switch Forms */}
           <div>
@@ -174,6 +179,8 @@ export default function Home() {
                 value={password}
                 onChange={handlePass}
               />
+              <br />
+              {badpass ? "Wrong login on password!" : ""}
               <br />
               <button type="submit" className={styles.normalbutton}>get me in</button>
             </form>

@@ -44,6 +44,16 @@
   grid-row-start: 2;
 }
 
+.loginmain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
+  gap: 32px;
+  grid-row-start: 2;
+}
+
 .main ol {
   font-family: var(--font-geist-mono);
   padding-left: 0;
@@ -72,12 +82,23 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
+  border-color: black;
+  border-width: 5px;
 }
 
 .reqin {
   gap: 16px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logina {
+  gap: 16px;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
@@ -100,10 +121,7 @@
 .req {
   gap: 50px;
   appearance: none;
-  border-radius: 128px;
   padding: 0 20px;
-  border: none;
-  border: 1px solid transparent;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   cursor: pointer;
   display: flex;
@@ -120,8 +138,6 @@
   border-radius: 128px;
   height: 48px;
   padding: 0 20px;
-  border: none;
-  border: 1px solid transparent;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   display: flex;
   align-items: center;

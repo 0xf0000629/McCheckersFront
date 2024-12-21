@@ -13,8 +13,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "McCheckers Login",
-  description: "log in man",
+  title: "McCheckers",
+  description: "The McCheckers Academy Website",
 };
 
 export default function RootLayout({ children }) {

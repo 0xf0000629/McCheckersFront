@@ -138,7 +138,7 @@ const [loading, setLoading] = useState(true);
           style={{ padding: "8px", marginRight: "10px" }}
         />
         <div className={styles.reqin}>
-          <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
+          <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" className={styles.reqout}/>
           {data
             .filter(item => item.username.startsWith(searchbar))
             .slice(0, 100)

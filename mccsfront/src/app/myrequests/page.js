@@ -259,7 +259,7 @@ const [loading, setLoading] = useState(true);
       <main className={styles.main}>
         <h1>MY REQUESTS</h1>
         <div className={styles.req}>
-        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
+        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" className={styles.reqout}/>
           {data
             .filter(
               req =>

@@ -41,9 +41,9 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
         <h2>Create request</h2>
         <form onSubmit={onSubmit}>
           <div className={styles.formGroup}>
-            <h2>ROOM:</h2>
-            <select onChange={handleR} id="room" name="room">
-              {options2.slice(locationv*100, (locationv+1)*100).map((option, id) => (
+            <h2>LOCATION:</h2>
+            <select onChange={handleL} id="location" name="location">
+              {options1.map((option, id) => (
                 <option key={option} value={id+1}>
                   {option}
                 </option>
@@ -51,9 +51,9 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
             </select>
           </div>
           <div className={styles.formGroup}>
-            <h2>LOCATION:</h2>
-            <select onChange={handleL} id="location" name="location">
-              {options1.map((option, id) => (
+            <h2>ROOM:</h2>
+            <select onChange={handleR} id="room" name="room">
+              {options2.slice((locationv-1)*100, (locationv)*100).map((option, id) => (
                 <option key={option} value={id+1}>
                   {option}
                 </option>

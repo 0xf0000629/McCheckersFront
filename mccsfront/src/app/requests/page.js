@@ -311,7 +311,7 @@ const [loading, setLoading] = useState(true);
           +
         </button>
         <div className={styles.req}>
-        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader"/>
+        <ClipLoader color="#999999" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" className={styles.reqout}/>
           {data.slice((count - 1) * 20, count * 20).map((request, i) => (
             <RequestComp
               id={request.id}
