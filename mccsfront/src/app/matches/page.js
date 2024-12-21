@@ -107,7 +107,7 @@ const [loading, setLoading] = useState(true);
                 id: item.request.id,
                 time: item.request.dateTime,
               },
-              success: item.isSuccess,
+              success: item.success,
               winner: {
                 id: item.winner.id,
                 firstname: item.winner.name,
