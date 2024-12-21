@@ -8,12 +8,18 @@ export default function RequestComp({
   mod,
   players,
   joinbutton,
-  modbutton
+  modbutton,
 }) {
   const router = useRouter();
-  function timeconv(time){
+  function timeconv(time) {
     const date = new Date(time);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")} ${String(
+      date.getHours()
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(
+      date.getSeconds()
+    ).padStart(2, "0")}`;
     return formattedDate;
   }
   return (
@@ -45,7 +51,7 @@ export default function RequestComp({
       </div>
       {joinbutton && (
         <button className={styles.normalbutton} onClick={joinbutton}>
-          {modbutton === true ? LEAVE : JOIN}
+          {modbutton === true ? "LEAVE" : "JOIN"}
         </button>
       )}
     </div>
