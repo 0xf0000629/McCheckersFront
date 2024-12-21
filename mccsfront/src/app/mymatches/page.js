@@ -51,7 +51,7 @@ export default function MatchPage() {
     setForm(false);
   };
 
-  const [data, setData] = useState(basedata);
+  const [data, setData] = useState([]);
   const router = useRouter();
   const [reroll, setReroll] = useState(0);
   const [me, setMe] = useState({

@@ -81,7 +81,7 @@ export default function Homepage() {
     setForm(false);
   };
 
-  const [data, setData] = useState(basedata);
+  const [data, setData] = useState([]);
 
   const [matchp, setmatchp] = useState([]);
 
