@@ -59,7 +59,7 @@ export default function ProfilePanel(props) {
           right: isPanelOpen ? "0" : "-300px", // Adjust based on your panel width
         }}
       >
-        <h2>hello {name}</h2>
+        <h2>Hello, {name}!</h2>
         <button
           onClick={() => router.push("/profile")}
           className={styles.maxbutton}
@@ -107,10 +107,10 @@ export default function ProfilePanel(props) {
           <></>
         )}
         <button onClick={() => logout()} className={styles.maxbutton}>
-          logout
+          Log Out
         </button>
         <button onClick={togglePanel} className={styles.maxbutton}>
-          CLOSE
+          Close
         </button>
       </div>
     </div>

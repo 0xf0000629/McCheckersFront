@@ -147,7 +147,7 @@ const [loading, setLoading] = useState(true);
         <ProfilePanel name={me.firstname} token={token} />
       </header>
       <main className={styles.main}>
-        <h1>LEADERBOARDS</h1>
+        <h1>UNACTIVATED USERS</h1>
         <input
           type="text"
           placeholder="Search..."
