@@ -37,7 +37,7 @@ export default function EpicForm({ onClose, onSubmit, players }){
         <form onSubmit={onSubmit}>
           <div className={styles.formGroup}>
             <h2>Successful? </h2>
-            <input type="checkbox" id="succ" name="succ"/>
+            <input className={styles.inputbig} type="checkbox" id="succ" name="succ"/>
           </div>
 
           <div className={styles.formGroup}>

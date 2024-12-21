@@ -48,6 +48,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 90%;
   height: 100%;
   gap: 32px;
@@ -83,8 +84,10 @@
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  border-color: black;
+  border-color: #101010;
   border-width: 5px;
+  border-style: solid;
+  background-color: #ffffff;
 }
 
 .reqin {
@@ -96,11 +99,20 @@
 }
 
 .logina {
+  padding: 20px;
   gap: 16px;
+  width: 50%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
+  border-color: #101010;
+  border-width: 3px;
+  border-style: solid;
+  background-color: #ffffff transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .leadercard {
@@ -236,7 +248,7 @@ a.secondary {
 
 .roundbutton {
   border-radius: 128px;
-  border-color: black;
+  border-color: #101010;
   border-width: 5px;
   min-width: 40px;
   min-height: 40px;
@@ -252,7 +264,7 @@ a.secondary {
 }
 .profilebutton {
   border-radius: 128px;
-  border-color: black;
+  border-color: #101010;
   border-width: 5px;
   min-width: 40px;
   min-height: 40px;
@@ -269,7 +281,7 @@ a.secondary {
 .normalbutton {
   padding: 10px 20px;
   border-radius: 5px;
-  border-color: black;
+  border-color: #101010;
   border-width: 2px;
   font-size: 12pt;
   background-color: #ffffff;
@@ -341,4 +353,13 @@ a.secondary {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   transition: right 0.3s ease-in-out;
   padding: 20px;
+}
+
+.inputbig {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border-color: #101010;
+  border-width: 2px;
+  font-size: 12pt;
+  background-color: #ffffff;
 }

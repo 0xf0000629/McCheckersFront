@@ -15,15 +15,15 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
         <form onSubmit={onSubmit}>
           <div className={styles.formGroup}>
             <h2>ROOM:</h2>
-            <input id="room" name="room" required />
+            <input className={styles.inputbig} id="room" name="room" required />
           </div>
           <div className={styles.formGroup}>
             <h2>LOCATION:</h2>
-            <input id="location" name="location" required />
+            <input className={styles.inputbig} id="location" name="location" required />
           </div>
           <div className={styles.formGroup}>
             <h2>TIME:</h2>
-            <input type="datetime-local" id="time" name="time" required />
+            <input className={styles.inputbig} type="datetime-local" id="time" name="time" required />
           </div>
           <button type="submit" className={styles.submitButton}>
             Submit

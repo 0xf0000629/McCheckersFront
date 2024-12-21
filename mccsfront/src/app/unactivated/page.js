@@ -148,7 +148,7 @@ const [loading, setLoading] = useState(true);
       </header>
       <main className={styles.main}>
         <h1>UNACTIVATED USERS</h1>
-        <input
+        <input className={styles.inputbig} 
           type="text"
           placeholder="Search..."
           value={searchbar}

@@ -62,7 +62,7 @@ export default function EpicForm({ isOpen, onClose, onSubmit }){
           </div>
           <div className={styles.formGroup}>
             <h2>TIME:</h2>
-            <input type="datetime-local" id="time" name="time" required />
+            <input className={styles.inputbig} type="datetime-local" id="time" name="time" required />
           </div>
           <button type="submit" className={styles.submitButton}>
             Submit

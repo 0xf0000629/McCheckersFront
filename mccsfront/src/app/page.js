@@ -167,14 +167,14 @@ export default function Home() {
 
           {activeForm === "login" && (
             <form onSubmit={logEmIn}>
-              <input
+              <input className={styles.inputbig} 
                 type="text"
                 placeholder="Username..."
                 value={login}
                 onChange={handleLog}
               />
               <br />
-              <input
+              <input className={styles.inputbig} 
                 type="password"
                 placeholder="Password..."
                 value={password}
@@ -189,21 +189,21 @@ export default function Home() {
 
           {activeForm === "register" && (
             <form onSubmit={regEmIn}>
-              <input
+              <input className={styles.inputbig} 
                 type="text"
                 placeholder="Surname..."
                 value={thesurname}
                 onChange={handleSN}
               />
               <br />
-              <input
+              <input className={styles.inputbig} 
                 type="text"
                 placeholder="Name..."
                 value={thename}
                 onChange={handleN}
               />
               <br />
-              <input
+              <input className={styles.inputbig} 
                 type="text"
                 placeholder="Phone number..."
                 value={thephone}
@@ -218,14 +218,14 @@ export default function Home() {
                 <option value="0">Russia</option>
               </select>
               <br />
-              <input
+              <input className={styles.inputbig} 
                 type="text"
                 placeholder="Username..."
                 value={login}
                 onChange={handleLog}
               />
               <br />
-              <input
+              <input className={styles.inputbig} 
                 type="text"
                 placeholder="Password..."
                 value={password}
