@@ -28,32 +28,35 @@ export default function Profile() {
     if (!authToken) {
       router.push("/");
     }
-    const id = window.sessionStorage.getItem("focus");
-    // Function to fetch data
-    const fetchUser = async () => {
-      const response = await fetch(process.env.USER + "/me", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        let info = response.json().then(player => {
-          setData({
-            id: player.id,
-            firstname: player.name,
-            secondname: player.surname,
-            phone: player.phoneNumber,
-            elo: player.elo,
-            rank: player.rank,
-            active: player.active,
-          });
-        });
-      }
-    };
-    fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    fetchUser();
+  }, [token]);
+
+  const fetchUser = async () => {
+    const response = await fetch(process.env.USER + "/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      let info = response.json().then(player => {
+        setData({
+          id: player.id,
+          firstname: player.name,
+          secondname: player.surname,
+          phone: player.phoneNumber,
+          elo: player.elo,
+          rank: player.rank,
+          active: player.active,
+        });
+      });
+    }
+  };
 
   return (
     data && (

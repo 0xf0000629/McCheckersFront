@@ -44,7 +44,7 @@ export default function ProfilePanel(props) {
 
   useEffect(() => {
     fetchAdmin();
-  }, []);
+  }, [token]);
 
   return (
     <div>

@@ -49,10 +49,14 @@ export default function MatchPage() {
     if (!authToken) {
       router.push("/");
     }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
     fetchReqs(authToken);
     fetchMe();
     setReroll(reroll + 1);
-  }, []);
+  }, [token]);
 
   const formOpen = () => {
     setForm(true);

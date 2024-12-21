@@ -61,54 +61,60 @@ export default function Profile() {
     if (!authToken) {
       router.push("/");
     }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
     // Function to fetch data
-    const fetchUser = async () => {
-      const response = await fetch(process.env.USER + "/" + id, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        let info = response.json().then(player => {
-          setData({
-            id: player.id,
-            firstname: player.name,
-            secondname: player.surname,
-            phone: player.phoneNumber,
-            elo: player.elo,
-            rank: player.rank,
-            active: player.active,
-            ismod: player.isModerator,
-          });
-          setMod(player.isModerator);
-          setActive(player.active);
-        });
-      }
-    };
-    const fetchAdmin = async () => {
-      const adminreq = await fetch(process.env.API + "/admin", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (adminreq.ok) {
-        setAdmin(1);
-      } else console.log("not an admin...");
-    };
-    const fetchMe = async () => {
-      if (localStorage.getItem("me") != undefined) {
-        let loadme = JSON.parse(localStorage.getItem("me"));
-        setMe(me);
-      }
-    };
+    
     fetchMe();
     fetchUser();
     fetchAdmin();
-  }, [id, me, data]);
+  }, [token]);
+
+  const fetchUser = async () => {
+    const response = await fetch(process.env.USER + "/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      let info = response.json().then(player => {
+        setData({
+          id: player.id,
+          firstname: player.name,
+          secondname: player.surname,
+          phone: player.phoneNumber,
+          elo: player.elo,
+          rank: player.rank,
+          active: player.active,
+          ismod: player.isModerator,
+        });
+        setMod(player.isModerator);
+        setActive(player.active);
+      });
+    }
+  };
+  const fetchAdmin = async () => {
+    const adminreq = await fetch(process.env.API + "/admin", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (adminreq.ok) {
+      setAdmin(1);
+    } else console.log("not an admin...");
+  };
+  const fetchMe = async () => {
+    if (localStorage.getItem("me") != undefined) {
+      let loadme = JSON.parse(localStorage.getItem("me"));
+      setMe(me);
+    }
+  };
 
   async function activeSwitch(id) {
     if (data.active == false) {

@@ -79,7 +79,7 @@ export default function Homepage() {
 
   const adminrights = 0;
 
-  const fetchReqs = async () => {
+  const fetchReqs = async (token) => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -124,16 +124,12 @@ export default function Homepage() {
 
   console.log("redraw");
   useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
-    setToken(authToken);
-    if (!authToken) {
-      router.push("/");
-    }
+    if (!token) return;
     // Function to fetch data
     fetchReqs();
     fetchMe();
     fetchAdmin();
-  }, []);
+  }, [token]);
 
   const sendtoprofile = id => {
     router.push("/profile/" + id);

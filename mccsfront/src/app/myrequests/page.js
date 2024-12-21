@@ -106,7 +106,7 @@ export default function Homepage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async () => {
+  const fetchReqs = async (token) => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -152,16 +152,20 @@ export default function Homepage() {
     }
   };
 
-  console.log("redraw");
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     setToken(authToken);
     if (!authToken) {
       router.push("/");
     }
+  }, []);
+
+  console.log("redraw");
+  useEffect(() => {
+    if (!token) return;
     fetchMe();
     fetchReqs();
-  }, []);
+  }, [token]);
 
   const report_req = async e => {
     e.preventDefault();

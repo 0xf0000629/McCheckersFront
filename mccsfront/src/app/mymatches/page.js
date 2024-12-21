@@ -37,12 +37,6 @@ let basedata = [
   },
 ];
 export default function MatchPage() {
-  const token = window.localStorage.getItem("authToken");
-  let auth = true;
-  if (!token) {
-    auth = false;
-    //return;
-  }
 
   const [count, setCount] = useState(1);
 
@@ -76,7 +70,7 @@ export default function MatchPage() {
     if (count > 1) setCount(count - 1);
   };
 
-  const fetchReqs = async () => {
+  const fetchReqs = async (token) => {
     const response = await fetch(process.env.REQUEST, {
       method: "GET",
       headers: {
@@ -125,17 +119,21 @@ export default function MatchPage() {
     }
   };
 
-  console.log("redraw");
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     setToken(authToken);
     if (!authToken) {
       router.push("/");
     }
+  }, []);
+
+  console.log("redraw");
+  useEffect(() => {
+    if (!token) return;
     // Function to fetch data
     fetchMe();
     fetchReqs();
-  }, []);
+  }, [token]);
 
   async function tryjoin(id, modpriv) {
     const index = data.findIndex(item => item.id === id);
