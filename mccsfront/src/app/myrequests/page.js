@@ -181,7 +181,7 @@ export default function Homepage() {
         winnerScore: reqdata.score1,
         loserScore: reqdata.score2,
         remark: reqdata.remake,
-        moderator_id: me.id,
+        moderatorId: me.id,
       }),
     });
 

@@ -38,12 +38,12 @@ export default function EpicForm({ onClose, onSubmit, players }){
           <select onChange={handleW} id="score1" name="score1" style={{ padding: '8px', marginRight: '10px' }}>
               <option value="0">0</option>
               <option value="1">1</option>
-              {loser != 2 ? <option value="2">2</option> : <></>}
+              {loser != "2" ? <option value="2">2</option> : <></>}
           </select>
           <select onChange={handleL} id="score2" name="score2" style={{ padding: '8px', marginRight: '10px' }}>
               <option value="0">0</option>
               <option value="1">1</option>
-              {winner != 2 ? <option value="2">2</option> : <></>}
+              {winner != "2" ? <option value="2">2</option> : <></>}
           </select>
 
           <div className={styles.formGroup}>
