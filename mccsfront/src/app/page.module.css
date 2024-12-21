@@ -85,9 +85,11 @@
   align-items: center;
   border-radius: 20px;
   border-color: #101010;
-  border-width: 5px;
+  border-width: 3px;
   border-style: solid;
-  background-color: #ffffff;
+  background-color: #ffffff transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .reqin {
